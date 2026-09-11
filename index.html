@@ -596,6 +596,91 @@
   .cert-card .facts { font-family: var(--font-mono); font-size: var(--step--2); color: var(--ink-faint); display: flex; flex-wrap: wrap; gap: 4px 14px; }
   .cert-card.dim { opacity: .8; }
   .cert-card.dim:hover { transform: none; border-color: var(--rule); }
+
+  /* ============ EXECUTION TRACE WIDGET ============ */
+  .trace { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); padding: 18px 20px 20px; margin: 26px 0; }
+  .tr-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .tr-label { font-family: var(--font-mono); font-size: var(--step--2); letter-spacing: .14em; text-transform: uppercase; color: var(--ivy-bright); }
+  .tr-step { font-family: var(--font-mono); font-size: var(--step--2); color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .tr-body { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+  .tr-code { margin: 0; font-family: var(--font-mono); font-size: var(--step--1); line-height: 1.75; background: #12140f; color: #d7d4c6; border-radius: var(--radius); padding: 12px 0; overflow-x: auto; }
+  .tr-line { display: flex; gap: 10px; padding: 1px 14px; white-space: pre; }
+  .tr-line.cur { background: color-mix(in srgb, var(--ivy-bright) 32%, transparent); }
+  .tr-no { color: #7d7a6c; width: 1.5em; text-align: right; flex: none; user-select: none; }
+  .tr-side { display: flex; flex-direction: column; gap: 10px; }
+  .tr-panel { border: 1px solid var(--rule-soft); border-radius: var(--radius); padding: 10px 12px; background: var(--paper); }
+  .tr-panel > b { display: block; font-family: var(--font-mono); font-size: var(--step--2); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .tr-var { display: flex; justify-content: space-between; gap: 10px; font-family: var(--font-mono); font-size: var(--step--1); padding: 2px 0; }
+  .tr-vn { color: var(--ivy-bright); }
+  .tr-vv { color: var(--ink); text-align: right; }
+  .tr-frame { font-family: var(--font-mono); font-size: var(--step--1); padding: 2px 0; color: var(--ink); }
+  .tr-frame.top { color: var(--ivy-bright); }
+  .tr-empty { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-faint); }
+  .tr-out { margin: 0; font-family: var(--font-mono); font-size: var(--step--1); white-space: pre-wrap; color: var(--ink); min-height: 1.5em; }
+  .tr-note { margin-top: 14px; font-size: var(--step--1); color: var(--ink-soft); min-height: 2.6em; }
+  .tr-controls { display: flex; gap: 8px; margin-top: 6px; }
+  .tr-controls .btn { padding: 7px 14px; font-size: var(--step--2); }
+  @media (max-width: 640px) { .tr-body { grid-template-columns: 1fr; } }
+
+  /* ============ TEST FILE / SOLUTION BLOCKS ============ */
+  .testfile { border: 1px solid var(--rule); border-left: 3px solid var(--ivy-bright); border-radius: var(--radius); margin: 20px 0; overflow: hidden; }
+  .testfile .tf-name { font-family: var(--font-mono); font-size: var(--step--2); letter-spacing: .06em; color: var(--ink-soft); background: var(--surface-2); padding: 8px 14px; border-bottom: 1px solid var(--rule); }
+  .testfile pre { margin: 0; border-radius: 0; border: none; }
+  details.reveal { border: 1px solid var(--rule); border-radius: var(--radius); margin: 20px 0; background: var(--surface); }
+  details.reveal summary {
+    cursor: pointer; padding: 12px 16px; font-family: var(--font-mono); font-size: var(--step--1);
+    color: var(--ivy-bright); list-style: none; display: flex; align-items: center; gap: 8px;
+  }
+  details.reveal summary::-webkit-details-marker { display: none; }
+  details.reveal summary::before { content: "▸"; transition: transform .12s ease; }
+  details.reveal[open] summary::before { transform: rotate(90deg); }
+  details.reveal .reveal-body { padding: 0 16px 16px; }
+  .pass { color: var(--ok); font-weight: 600; }
+  .fail { color: var(--danger); font-weight: 600; }
+
+  /* ============ ACCOUNT / CLASSROOM / MODAL ============ */
+  .acct { display: flex; align-items: center; gap: 10px; }
+  .acct .who { font-family: var(--font-mono); font-size: var(--step--2); color: var(--ink-soft); white-space: nowrap; }
+  .acct-btn { padding: 6px 12px; font-size: var(--step--2); }
+  .acct .link {
+    background: none; border: none; color: var(--ivy-bright); font-family: var(--font-mono);
+    font-size: var(--step--2); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; padding: 0;
+  }
+  .acct .link:hover { color: var(--ink); }
+
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(20, 17, 13, .55); backdrop-filter: blur(1px);
+    display: grid; place-items: center; z-index: 200; padding: 20px;
+  }
+  .modal {
+    background: var(--surface); border-radius: var(--radius); max-width: 440px; width: 100%;
+    padding: 30px 28px; box-shadow: var(--shadow); border: 1px solid var(--rule);
+  }
+  .modal h2 { font-size: var(--step-2); margin: 6px 0 4px; }
+  .modal p.sub { font-size: var(--step--1); color: var(--ink-soft); margin-bottom: 4px; line-height: 1.55; }
+  .modal label { display: block; font-size: var(--step--1); color: var(--ink-soft); margin: 14px 0 6px; }
+  .modal input {
+    width: 100%; font: inherit; font-size: var(--step--1); padding: 10px 12px;
+    border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink);
+  }
+  .modal .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+  .modal .modal-actions .btn { flex: 1; }
+
+  .path { display: flex; flex-direction: column; gap: 2px; }
+  .path-item {
+    display: grid; grid-template-columns: 30px 1fr auto; gap: 14px; align-items: center;
+    padding: 14px 16px; border: 1px solid var(--rule); text-decoration: none; color: var(--ink);
+    background: var(--surface); transition: border-color .12s ease;
+  }
+  .path-item + .path-item { border-top: none; }
+  .path-item:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+  .path-item:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+  .path-item:hover { border-color: var(--ivy); color: var(--ink); position: relative; z-index: 1; }
+  .path-item .pn { font-family: var(--font-mono); color: var(--ink-faint); text-align: center; }
+  .path-item.done .pn { color: var(--ok); }
+  .path-item h4 { font-size: var(--step-0); font-family: var(--font-body); font-weight: 600; }
+  .path-item .pd { font-size: var(--step--2); color: var(--ink-faint); font-family: var(--font-mono); margin-top: 2px; }
+  .path-item .pp { font-family: var(--font-mono); font-size: var(--step--2); color: var(--ink-soft); white-space: nowrap; }
 </style>
 
 </head>
@@ -626,6 +711,7 @@
 
       <nav class="topnav" id="nav" aria-label="Primary"></nav>
 
+      <div class="acct" id="acctChip"></div>
       <button class="theme-toggle" id="themeBtn" type="button" aria-label="Toggle color theme">
         <span id="themeIcon">◐</span> <span id="themeLbl">Theme</span>
       </button>
@@ -635,6 +721,10 @@
   <main class="main" id="main">
     <div class="main-inner" id="view"></div>
   </main>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div>
 </div>
 
 <script>
@@ -698,47 +788,863 @@ TypeError: can only concatenate str (not "int") to str</code></pre>
 <p>That message is not an insult. It is a precise description of a fixable problem, and by week three you will read it in one glance.</p>`),
           L("Values, names, and types", "reading", 22,
             "Numbers, strings, and booleans; assigning names to values; why 3 and \"3\" behave differently.",
-            ["Assign and reassign variables", "Predict the type of an expression", "Convert between str, int, and float deliberately"], null),
+            ["Assign and reassign variables", "Predict the type of an expression", "Convert between str, int, and float deliberately"],
+            `<p class="lead">Every value in Python has a name pointing at it and a type telling Python what it can do. Get comfortable with both and most of the confusing early errors stop being confusing.</p>
+<h3>A name is a label, not a box</h3>
+<p>When you write <code>age = 30</code>, Python does not put 30 "inside" a box called age. It creates the value 30, then makes the name <code>age</code> point at it — like a sticky note, not a container. You can move the sticky note to a different value any time:</p>
+<pre><code>age = 30
+age = 31        # the same name, now pointing at a different value
+print(age)        # 31</code></pre>
+<h3>The types you will use constantly</h3>
+<pre><code>42          int      a whole number
+3.14        float    a number with a decimal point
+"hello"     str      text, in single or double quotes
+True        bool     True or False, capitalized</code></pre>
+<p>Ask Python what type something is with <code>type()</code>:</p>
+<pre class="kbd-term"><code>&gt;&gt;&gt; type(42)
+&lt;class 'int'&gt;
+&gt;&gt;&gt; type("42")
+&lt;class 'str'&gt;</code></pre>
+<p><code>42</code> and <code>"42"</code> look almost identical on the page but are completely different things to Python: one is a number you can do arithmetic on, the other is text that happens to contain digits.</p>
+<h3>Why + does two different things</h3>
+<pre><code>3 + 4          # 7      (numeric addition)
+"3" + "4"      # "34"   (string concatenation — gluing text together)
+3 + "4"        # TypeError — Python refuses to guess what you meant</code></pre>
+<p>That's the exact error from the last lesson's terminal transcript. Python will not silently convert one type into another for you. You convert on purpose, with <code>int()</code>, <code>float()</code>, or <code>str()</code>:</p>
+<pre><code>text = "4"
+number = int(text)        # 4, now usable in arithmetic
+print(3 + number)          # 7
+
+age = 30
+message = "I am " + str(age) + " years old"</code></pre>
+<h3>input() always gives you a string</h3>
+<p>Whatever a person types at <code>input()</code>, Python hands it back as <code>str</code> — even if they typed digits. This trips up nearly everyone in their first week:</p>
+<pre><code>value = input("Enter a number: ")     # value is a str, e.g. "10"
+doubled = value * 2                     # "1010" — string repetition, not math!
+doubled = int(value) * 2                # 20 — convert first</code></pre>
+<div class="trace" data-trace="cs110-values"></div>
+<h3>Your first self-check</h3>
+<p>Python has a built-in word, <code>assert</code>, that checks a claim and stops the program loudly if the claim is false. You will use this constantly, and it is the seed of the formal testing you'll do in Unit 5:</p>
+<pre><code>assert 3 + 4 == 7, "addition should give 7"
+assert type("42") is str, "quoted digits are still text"
+print("Both checks passed.")</code></pre>
+<p>Run that file and nothing dramatic happens — silence and the final print mean every assertion held. Change the <code>7</code> to an <code>8</code> and run it again: Python stops immediately and shows you exactly which claim failed and why. That is a test.</p>`),
           L("Lab: your first 20 lines", "lab", 55,
             "Write, run, and fix a short program that greets a user and does simple arithmetic on their input. Auto-checked.",
-            null, null)
+            null,
+            `<p class="lead">Time to write a program from a blank file. You'll build a tiny greeting-and-arithmetic tool, and — for the first time — see the actual tests it needs to pass.</p>
+<h3>The task</h3>
+<p>Create a file named <code>greet.py</code> that:</p>
+<ol>
+<li>Defines a function <code>add(a, b)</code> that returns the sum of two numbers.</li>
+<li>In a <code>main()</code> function: asks for the user's name and greets them, then asks for two numbers, adds them with <code>add()</code>, and prints the result.</li>
+</ol>
+<p>Notice the shape: the <em>logic</em> (addition) lives in a function that takes input as arguments and returns a value. The <em>interaction</em> (asking, printing) lives separately in <code>main()</code>. This split is what makes the logic testable — a test can call <code>add(2, 3)</code> directly without needing a human to type anything.</p>
+<h3>Starter template</h3>
+<pre><code># greet.py
+
+def add(a, b):
+    """Return the sum of a and b."""
+    return a + b
+
+
+def main():
+    name = input("What is your name? ")
+    print(f"Hello, {name}! Let's do some quick math.")
+
+    first = float(input("Enter a number: "))
+    second = float(input("Enter another number: "))
+    print(f"{first} + {second} = {add(first, second)}")
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+<p>That last line is an idiom you'll see in every Python file from here on. <code>__name__</code> is <code>"__main__"</code> only when you run the file directly — not when something else imports it. It means: "run main() only if this file is the one being executed." That's what lets the auto-grader import <code>add</code> from your file to test it, without your greeting and input prompts running and blocking the grader.</p>
+<h3>What the auto-grader actually checks</h3>
+<p>This isn't hidden from you — here is the real test file, word for word:</p>
+<div class="testfile">
+  <div class="tf-name">test_greet.py</div>
+  <pre><code>from greet import add
+
+def test_add_positive_numbers():
+    assert add(2, 3) == 5
+
+def test_add_negative_numbers():
+    assert add(-2, -3) == -5
+
+def test_add_zero():
+    assert add(0, 7) == 7
+
+def test_add_floats():
+    assert add(1.5, 2.5) == 4.0</code></pre>
+</div>
+<p>Notice what it does <em>not</em> do: it never calls <code>main()</code> and never simulates typing. It only imports and calls <code>add</code>, because <code>add</code> is the part with a clear input and a clear output. Run it yourself once you have Python installed:</p>
+<pre class="kbd-term"><code>$ pytest test_greet.py -v
+test_greet.py::test_add_positive_numbers PASSED
+test_greet.py::test_add_negative_numbers PASSED
+test_greet.py::test_add_zero PASSED
+test_greet.py::test_add_floats PASSED
+
+4 passed in 0.01s</code></pre>
+<details class="reveal">
+  <summary>See one possible finished solution</summary>
+  <div class="reveal-body">
+    <p>The starter template above already passes every test as written — that's intentional for this first lab. Your job is to actually type it in yourself, run it, and watch pytest pass, rather than change any logic. From the next lab onward, you'll be given a task the starter code doesn't yet solve.</p>
+  </div>
+</details>`)
         ]
       },
       {
         n: "Decisions and repetition", weeks: "Weeks 3–4",
         sum: "Make programs that respond differently to different input, and that repeat work without you repeating yourself.",
         lessons: [
-          L("Conditionals and boolean logic", "reading", 24, "if / elif / else, comparison operators, and combining conditions with and / or / not.", ["Write branching logic for a multi-case problem", "Avoid the classic = vs == error"], null),
-          L("Loops: while and for", "reading", 26, "Iterating over a range, over a list, and until a condition changes. Off-by-one errors and how to not have them.", ["Choose between for and while", "Trace a loop by hand on paper"], null),
-          L("Lab: FizzBuzz and friends", "lab", 50, "Three classic small problems that force clean use of conditionals and loops. Auto-checked with hidden cases.", null, null)
+          L("Conditionals and boolean logic", "reading", 24, "if / elif / else, comparison operators, and combining conditions with and / or / not.", ["Write branching logic for a multi-case problem", "Avoid the classic = vs == error"],
+            `<p class="lead">A program that always does the same thing regardless of input isn't very useful. Conditionals let your code make decisions.</p>
+<h3>if, elif, else</h3>
+<pre><code>temperature = 15
+
+if temperature &gt; 25:
+    print("It's warm.")
+elif temperature &gt; 10:
+    print("It's mild.")
+else:
+    print("It's cold.")</code></pre>
+<p>Python checks each condition top to bottom and runs the <strong>first</strong> block that matches — then skips the rest, even if a later condition would also be true. Order matters: swap the two conditions above and a temperature of 30 would incorrectly print "It's mild," because 30 &gt; 10 is also true and gets checked first.</p>
+<h3>Comparison operators</h3>
+<pre><code>==   equal to           !=   not equal to
+&gt;    greater than       &lt;    less than
+&gt;=   greater or equal   &lt;=   less or equal</code></pre>
+<div class="note" style="border-left-color:var(--danger)"><strong>The single most common beginner bug:</strong> <code>=</code> assigns a value. <code>==</code> compares two values. <code>if x = 5:</code> is not even valid Python — the interpreter refuses to run it and tells you so. If you ever see that error, you meant <code>==</code>.</div>
+<h3>Combining conditions</h3>
+<pre><code>age = 20
+has_ticket = True
+
+if age &gt;= 18 and has_ticket:
+    print("Welcome in.")
+
+if age &lt; 18 or not has_ticket:
+    print("Sorry, you can't enter.")</code></pre>
+<p><code>and</code> requires both sides to be true. <code>or</code> requires at least one. <code>not</code> flips a boolean. Python also short-circuits: in <code>a and b</code>, if <code>a</code> is false, Python never even evaluates <code>b</code> — useful for <code>if count &gt; 0 and total / count &gt; 5:</code>, which would crash on division by zero if the order were reversed.</p>
+<h3>Truthy and falsy, briefly</h3>
+<p>Any value can be used where Python expects a boolean. <code>0</code>, <code>""</code> (empty string), <code>[]</code> (empty list), and <code>None</code> all count as false; almost everything else counts as true:</p>
+<pre><code>name = ""
+if name:
+    print(f"Hello, {name}")
+else:
+    print("You didn't type a name.")</code></pre>
+<h3>Try it: classify a score</h3>
+<pre><code>score = 82
+
+if score &gt;= 90:
+    grade = "A"
+elif score &gt;= 80:
+    grade = "B"
+elif score &gt;= 70:
+    grade = "C"
+else:
+    grade = "F"
+
+assert grade == "B", f"expected B, got {grade}"
+print(f"Score {score} -&gt; grade {grade}")</code></pre>
+<p>Change <code>score</code> to 95, 72, and 40 and predict the grade before you run it each time. That prediction habit — decide what should happen, then check — is the single best way to learn control flow.</p>`),
+          L("Loops: while and for", "reading", 26, "Iterating over a range, over a list, and until a condition changes. Off-by-one errors and how to not have them.", ["Choose between for and while", "Trace a loop by hand on paper"],
+            `<p class="lead">Loops repeat work so you don't have to write the same line ten times. Python gives you two: <code>for</code>, when you know what you're iterating over, and <code>while</code>, when you're repeating until a condition changes.</p>
+<h3>for: iterate over something</h3>
+<pre><code>for n in range(1, 6):
+    print(n)          # 1 2 3 4 5</code></pre>
+<p><code>range(1, 6)</code> produces 1, 2, 3, 4, 5 — it stops <em>before</em> 6. This "stop before the end" convention is everywhere in Python (it's also how list slicing works) and is the source of most off-by-one bugs. Five numbers starting at 1 means the stop value is 1 + 5 = 6, not 5.</p>
+<pre><code>fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)</code></pre>
+<p>You can loop directly over a list's items — you rarely need index numbers in Python, unlike some other languages.</p>
+<h3>The accumulator pattern</h3>
+<p>The single most useful loop shape: start with an empty or zero "accumulator," then update it once per iteration.</p>
+<div class="trace" data-trace="cs110-loop-sum"></div>
+<h3>while: repeat until something changes</h3>
+<pre><code>count = 0
+while count &lt; 3:
+    print("Counting:", count)
+    count = count + 1
+print("Done.")</code></pre>
+<p>Unlike <code>for</code>, nothing about <code>while</code> guarantees it ever stops. Forget <code>count = count + 1</code> and this loops forever — an <strong>infinite loop</strong>. If your program hangs and shows no output, that's almost always the cause; stop it with Ctrl+C and look for the line that's supposed to change the condition.</p>
+<h3>break and continue</h3>
+<pre><code>for n in range(1, 10):
+    if n == 5:
+        break            # exit the loop immediately
+    print(n)               # prints 1 2 3 4
+
+for n in range(1, 6):
+    if n % 2 == 0:
+        continue         # skip the rest of this iteration
+    print(n)               # prints 1 3 5</code></pre>
+<h3>Try it: guess the output</h3>
+<pre><code>total = 0
+for n in [3, 1, 4, 1, 5]:
+    if n &gt; 2:
+        total = total + n
+print(total)</code></pre>
+<p>Predict the number, then run it. (It's 12: 3, 4, and 5 are each greater than 2; 3 + 4 + 5 = 12. The two 1s are skipped.)</p>`),
+          L("Lab: FizzBuzz and friends", "lab", 50, "Three classic small problems that force clean use of conditionals and loops. Auto-checked with hidden cases.", null,
+            `<p class="lead">Three small, self-contained functions. None are hard on their own — the point is writing clean loop-and-condition code and proving it with tests before you trust it.</p>
+<h3>The task</h3>
+<p>Create <code>fizzbuzz.py</code> with three functions:</p>
+<ol>
+<li><code>fizzbuzz(n)</code> — return a list of strings for 1 through n. Multiples of 3 become "Fizz", multiples of 5 become "Buzz", multiples of both become "FizzBuzz", everything else becomes its own number as a string.</li>
+<li><code>is_palindrome(s)</code> — return True if s reads the same forwards and backwards, ignoring case.</li>
+<li><code>count_vowels(s)</code> — return how many of a, e, i, o, u appear in s, ignoring case.</li>
+</ol>
+<h3>A hint on structure</h3>
+<p>Check the <em>most specific</em> condition first. Check "multiple of 3" before "multiple of 15" and you'll print "Fizz" for 15, never reaching the FizzBuzz case:</p>
+<pre><code>def fizzbuzz(n):
+    result = []
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            result.append("FizzBuzz")
+        elif i % 3 == 0:
+            result.append("Fizz")
+        elif i % 5 == 0:
+            result.append("Buzz")
+        else:
+            result.append(str(i))
+    return result</code></pre>
+<p>For a palindrome, Python can reverse a string with slicing: <code>s[::-1]</code> means "the whole string, stepping backward by 1." Lowercase both sides first so "Racecar" still counts.</p>
+<h3>The tests</h3>
+<div class="testfile">
+  <div class="tf-name">test_fizzbuzz.py</div>
+  <pre><code>from fizzbuzz import fizzbuzz, is_palindrome, count_vowels
+
+def test_fizzbuzz_basic():
+    assert fizzbuzz(15) == [
+        "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz",
+        "11", "Fizz", "13", "14", "FizzBuzz",
+    ]
+
+def test_fizzbuzz_length():
+    assert len(fizzbuzz(20)) == 20
+
+def test_palindrome_true():
+    assert is_palindrome("Racecar") is True
+
+def test_palindrome_false():
+    assert is_palindrome("Python") is False
+
+def test_count_vowels():
+    assert count_vowels("Hello World") == 3</code></pre>
+</div>
+<p>Write your own <code>fizzbuzz.py</code> first, without peeking at the hint's full function if you can help it. Run the tests. If <code>test_fizzbuzz_basic</code> fails, print your actual result and compare it to the expected list index by index — that habit saves far more time than staring at the code.</p>
+<details class="reveal">
+  <summary>See one possible solution</summary>
+  <div class="reveal-body">
+    <pre><code>def fizzbuzz(n):
+    result = []
+    for i in range(1, n + 1):
+        if i % 15 == 0:
+            result.append("FizzBuzz")
+        elif i % 3 == 0:
+            result.append("Fizz")
+        elif i % 5 == 0:
+            result.append("Buzz")
+        else:
+            result.append(str(i))
+    return result
+
+
+def is_palindrome(s):
+    cleaned = s.lower()
+    return cleaned == cleaned[::-1]
+
+
+def count_vowels(s):
+    count = 0
+    for ch in s.lower():
+        if ch in "aeiou":
+            count += 1
+    return count</code></pre>
+  </div>
+</details>`)
         ]
       },
       {
         n: "Functions", weeks: "Weeks 5–6",
         sum: "Package a piece of behavior behind a name so you can use it, test it, and trust it.",
         lessons: [
-          L("Defining and calling functions", "reading", 22, "Parameters, return values, and the difference between printing and returning.", ["Write a function with a docstring and a clear return", "Explain why return beats print for reusable code"], null),
-          L("Scope and the call stack", "reading", 20, "Local vs. global names, what a stack frame is, and how to read a traceback across several calls.", ["Read a multi-frame traceback", "Predict which variables are visible where"], null),
-          L("Quiz: tracing functions", "quiz", 15, "Ten short 'what does this print' items covering arguments, returns, and scope.", null, null),
-          L("Lab: refactor into functions", "lab", 60, "Take a 40-line script and break it into four tested functions without changing its behavior.", null, null)
+          L("Defining and calling functions", "reading", 22, "Parameters, return values, and the difference between printing and returning.", ["Write a function with a docstring and a clear return", "Explain why return beats print for reusable code"],
+            `<p class="lead">A function packages behavior behind a name: define it once, call it as many times as you want, each time with different inputs.</p>
+<h3>Anatomy of a function</h3>
+<pre><code>def greet(name):
+    """Return a greeting for name."""
+    return "Hello, " + name + "!"
+
+message = greet("Ada")
+print(message)          # Hello, Ada!</code></pre>
+<p><code>name</code> is a <strong>parameter</strong> — a placeholder filled in with whatever <strong>argument</strong> you pass at call time. The string right after the <code>def</code> line is a <strong>docstring</strong>: a description of what the function does, readable by humans and by tools.</p>
+<h3>return is not print</h3>
+<p>This is the single most important distinction in this unit. <code>print()</code> displays something and hands back nothing usable. <code>return</code> hands a value back to whatever called the function, so it can be stored, tested, or used in more computation.</p>
+<pre><code>def add_v1(a, b):
+    print(a + b)            # displays the answer, returns None
+
+def add_v2(a, b):
+    return a + b              # hands the answer back
+
+x = add_v1(2, 3)       # prints "5"; x is None
+y = add_v2(2, 3)       # prints nothing; y is 5</code></pre>
+<p>If a function's whole job is to compute something, it should <code>return</code> it — not print it — so the <em>caller</em> decides what to do with the result: print it, test it, save it, or pass it to another function. Every function you've tested so far in this course used <code>return</code> for exactly this reason.</p>
+<div class="trace" data-trace="cs110-func-call"></div>
+<h3>Default arguments</h3>
+<pre><code>def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+greet("Ada")                    # "Hello, Ada!"
+greet("Ada", "Hi")               # "Hi, Ada!"
+greet("Ada", greeting="Yo")    # "Yo, Ada!"</code></pre>
+<p>A parameter with <code>= value</code> becomes optional — callers can leave it out and get the default, or supply it by name for clarity.</p>
+<h3>Try it: write one from scratch</h3>
+<pre><code>def is_even(n):
+    return n % 2 == 0
+
+assert is_even(4) is True
+assert is_even(7) is False
+print("Both checks passed.")</code></pre>`),
+          L("Scope and the call stack", "reading", 20, "Local vs. global names, what a stack frame is, and how to read a traceback across several calls.", ["Read a multi-frame traceback", "Predict which variables are visible where"],
+            `<p class="lead">Every function call gets its own private workspace. Understanding that workspace — and what happens when calls stack up — turns a scary traceback into a readable map.</p>
+<h3>Local vs. global</h3>
+<pre><code>x = "global"
+
+def show():
+    x = "local"
+    print(x)          # local
+
+show()
+print(x)                # global — the function's x never touched this one</code></pre>
+<p>A name assigned inside a function is <strong>local</strong> to that call by default — it exists only while the function runs, and cannot see or change a same-named variable outside it. This is deliberate: it means you can freely name a variable inside a function without worrying about a name used elsewhere in the program.</p>
+<h3>The call stack</h3>
+<p>Every time a function calls another function, Python pushes a new <strong>frame</strong> onto the <strong>call stack</strong> — a record of where to return to, and what that call's local variables are. When a function returns, its frame is popped and its local variables disappear.</p>
+<div class="trace" data-trace="cs110-call-stack"></div>
+<h3>Reading a traceback</h3>
+<p>When something breaks several calls deep, Python prints the whole stack, oldest call first, most recent — where the error actually happened — last:</p>
+<pre class="kbd-term"><code>Traceback (most recent call last):
+  File "app.py", line 9, in &lt;module&gt;
+    print(quadruple(3))
+  File "app.py", line 5, in quadruple
+    doubled_twice = double(doubled_once)
+  File "app.py", line 2, in double
+    return n * 2
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'</code></pre>
+<p>Read it from the <strong>bottom up</strong>: the actual failure happened on line 2, inside <code>double</code>, called from line 5 inside <code>quadruple</code>, called from line 9 in the main file. Three frames, exactly like the trace above — except this time something broke, and the traceback is Python showing you the whole stack that led there.</p>
+<h3>Try it: predict the scope</h3>
+<pre><code>def outer():
+    value = 10
+    def inner():
+        return value * 2   # inner can READ outer's variables...
+    return inner()
+
+print(outer())          # 20
+
+def broken():
+    return value * 2      # ...but this value doesn't exist here at all
+
+# broken() would raise NameError: name 'value' is not defined</code></pre>
+<p>A nested function can read variables from the function that contains it, but a variable defined inside a function is invisible everywhere outside that function's own frame (and its nested functions).</p>`),
+          L("Quiz: tracing functions", "quiz", 15, "Six short 'what does this print' items covering arguments, returns, and scope.", null,
+            `<p class="lead">No grade is recorded here — this is a self-check. Predict each output on paper before you reveal the answer. Whatever you get wrong is exactly the concept to go re-read.</p>
+<h3>1</h3>
+<pre><code>def f(x):
+    return x + 1
+
+print(f(4))</code></pre>
+<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>5</code>. f(4) computes 4 + 1 and returns it; print shows it.</p></div></details>
+<h3>2</h3>
+<pre><code>def f(x):
+    x = x + 1
+    return x
+
+n = 4
+f(n)
+print(n)</code></pre>
+<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>4</code>. f receives its own local copy bound to the local name x. Reassigning x inside f never touches n outside it — and the returned value is never used here, since f(n) isn't assigned to anything.</p></div></details>
+<h3>3</h3>
+<pre><code>def add_one(n):
+    n += 1
+
+value = 10
+add_one(value)
+print(value)</code></pre>
+<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>10</code>. add_one never returns anything and never modifies the caller's value — same reasoning as question 2. A very common bug: writing a function that changes a local variable and expecting the caller to see the change.</p></div></details>
+<h3>4</h3>
+<pre><code>def mystery(a, b=5):
+    return a * b
+
+print(mystery(3))
+print(mystery(3, 2))</code></pre>
+<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>15</code> then <code>6</code>. The first call uses the default b=5 (3*5=15); the second overrides it (3*2=6).</p></div></details>
+<h3>5</h3>
+<pre><code>def a():
+    return b()
+
+def b():
+    return 42
+
+print(a())</code></pre>
+<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>42</code>. a() calls b(), which returns 42; a() returns that same value straight through. Three frames briefly exist: main, a, and b.</p></div></details>
+<h3>6</h3>
+<pre><code>count = 0
+
+def increment():
+    count = count + 1
+    return count
+
+print(increment())</code></pre>
+<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p>This raises <code>UnboundLocalError</code>, not a number. Because count is assigned inside increment, Python treats it as local for the WHOLE function — including on the right side of count + 1, before it has a local value. (The fix needs the <code>global</code> keyword, which this course deliberately avoids — mutating global state from inside a function is a habit worth avoiding, not learning.)</p></div></details>`),
+          L("Lab: refactor into functions", "lab", 60, "Take a 40-line script and break it into four tested functions without changing its behavior.", null,
+            `<p class="lead">Working code that's hard to read is still a liability. Take a script that does its job in one long tangle and reshape it into small, named, tested pieces — without changing what it does.</p>
+<h3>The starting point</h3>
+<p>This script works. Run it and it prints correct statistics. But every piece of logic is tangled together, nothing is reusable, and nothing is testable without capturing printed output.</p>
+<pre><code># stats_report.py  (before)
+
+numbers = [4, 8, 15, 16, 23, 42]
+total = 0
+for n in numbers:
+    total = total + n
+average = total / len(numbers)
+smallest = numbers[0]
+for n in numbers:
+    if n &lt; smallest:
+        smallest = n
+largest = numbers[0]
+for n in numbers:
+    if n &gt; largest:
+        largest = n
+print("Numbers:", numbers)
+print("Average:", average)
+print("Smallest:", smallest)
+print("Largest:", largest)</code></pre>
+<h3>The task</h3>
+<p>Refactor this into two functions, then a thin <code>main()</code>:</p>
+<ul>
+<li><code>compute_stats(numbers)</code> — return a dict with keys <code>sum</code>, <code>average</code>, <code>min</code>, <code>max</code>.</li>
+<li><code>format_report(numbers, stats)</code> — return a multi-line report string (not printed — <em>returned</em>, so it's testable).</li>
+</ul>
+<p>Python's built-ins <code>sum()</code>, <code>min()</code>, and <code>max()</code> already do the work of those three hand-written loops. Part of getting better at Python is learning what's already in the standard library so you stop reinventing it:</p>
+<pre><code>sum([4, 8, 15, 16, 23, 42])   # 108 — no loop needed
+min([4, 8, 15, 16, 23, 42])   # 4
+max([4, 8, 15, 16, 23, 42])   # 42</code></pre>
+<h3>The tests</h3>
+<div class="testfile">
+  <div class="tf-name">test_stats_report.py</div>
+  <pre><code>from stats_report import compute_stats, format_report
+
+def test_compute_stats_basic():
+    stats = compute_stats([4, 8, 15, 16, 23, 42])
+    assert stats["sum"] == 108
+    assert stats["min"] == 4
+    assert stats["max"] == 42
+    assert round(stats["average"], 2) == 18.0
+
+def test_compute_stats_single_value():
+    stats = compute_stats([10])
+    assert stats == {"sum": 10, "average": 10.0, "min": 10, "max": 10}
+
+def test_format_report_contains_values():
+    stats = compute_stats([1, 2, 3])
+    report = format_report([1, 2, 3], stats)
+    assert "Average: 2.00" in report
+    assert "Smallest: 1" in report
+    assert "Largest: 3" in report</code></pre>
+</div>
+<p>Note the second test: a single-item list means min, max, and average are all that one number. Edge cases like this — the smallest input that's still valid — are exactly where refactored, hand-loop code tends to break, so they belong in your test file even though they feel almost too simple to bother writing.</p>
+<details class="reveal">
+  <summary>See one possible solution</summary>
+  <div class="reveal-body">
+    <pre><code># stats_report.py  (after)
+
+def compute_stats(numbers):
+    """Return a dict with the sum, average, min, and max of numbers."""
+    total = sum(numbers)
+    return {
+        "sum": total,
+        "average": total / len(numbers),
+        "min": min(numbers),
+        "max": max(numbers),
+    }
+
+
+def format_report(numbers, stats):
+    """Return a human-readable report string."""
+    lines = [
+        f"Numbers: {numbers}",
+        f"Average: {stats['average']:.2f}",
+        f"Smallest: {stats['min']}",
+        f"Largest: {stats['max']}",
+    ]
+    return "\\n".join(lines)
+
+
+def main():
+    numbers = [4, 8, 15, 16, 23, 42]
+    stats = compute_stats(numbers)
+    print(format_report(numbers, stats))
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+</details>`)
         ]
       },
       {
         n: "Collections: lists and dictionaries", weeks: "Weeks 7–8",
         sum: "Model real data — a class roster, a shopping cart, a config file — with Python's two workhorse containers.",
         lessons: [
-          L("Lists and iteration patterns", "reading", 24, "Indexing, slicing, appending, and the map/filter/accumulate patterns done with plain loops.", ["Build and transform a list without index bugs"], null),
-          L("Dictionaries as records and lookups", "reading", 24, "Key–value pairs, when a dict beats a list, and counting things with a dict.", ["Choose the right container for a given shape of data"], null),
-          L("Lab: word frequency", "lab", 55, "Read a text file and report its ten most common words. Auto-checked.", null, null)
+          L("Lists and iteration patterns", "reading", 24, "Indexing, slicing, appending, and the map/filter/accumulate patterns done with plain loops.", ["Build and transform a list without index bugs"],
+            `<p class="lead">A list is an ordered, changeable sequence of values — the workhorse container you'll reach for constantly.</p>
+<h3>Indexing and slicing</h3>
+<pre><code>fruits = ["apple", "banana", "cherry", "date"]
+
+fruits[0]         # "apple"  — first item, index 0
+fruits[-1]         # "date"   — last item
+fruits[1:3]       # ["banana", "cherry"]  — a slice: from index 1, up to (not including) 3</code></pre>
+<p>Negative indices count from the end. Slices follow the same "stop before the end" rule as <code>range()</code> — <code>fruits[1:3]</code> gives 2 items, not 3.</p>
+<h3>Changing a list</h3>
+<pre><code>fruits.append("elderberry")      # add to the end
+fruits.insert(0, "apricot")      # insert at a specific position
+fruits.remove("banana")           # remove the first matching value
+fruits[0] = "avocado"                # replace by index</code></pre>
+<h3>Build-a-list-in-a-loop</h3>
+<p>The most common list pattern: start empty, <code>append</code> once per iteration.</p>
+<div class="trace" data-trace="cs110-list-build"></div>
+<h3>Membership and length</h3>
+<pre><code>"cherry" in fruits          # True — is this value present?
+len(fruits)                     # how many items</code></pre>
+<h3>A pattern to watch for</h3>
+<p>Modifying a list while looping over it is a classic source of bugs — items can get skipped because indices shift as you go. If you need a filtered list, build a <em>separate</em> list instead of removing from the one you're iterating:</p>
+<pre><code># risky: mutating while iterating
+for n in numbers:
+    if n &lt; 0:
+        numbers.remove(n)      # can silently skip items
+
+# safer: build a new list
+positives = []
+for n in numbers:
+    if n &gt;= 0:
+        positives.append(n)</code></pre>
+<h3>Try it</h3>
+<pre><code>words = ["a", "bb", "ccc", "dddd"]
+lengths = []
+for w in words:
+    lengths.append(len(w))
+
+assert lengths == [1, 2, 3, 4]
+print(lengths)</code></pre>`),
+          L("Dictionaries as records and lookups", "reading", 24, "Key–value pairs, when a dict beats a list, and counting things with a dict.", ["Choose the right container for a given shape of data"],
+            `<p class="lead">A dictionary maps keys to values — the tool for "look this up by name" instead of "look this up by position."</p>
+<h3>Building and reading a dict</h3>
+<pre><code>student = {
+    "name": "Ada",
+    "age": 22,
+    "enrolled": True,
+}
+
+student["name"]           # "Ada"
+student["gpa"]                # KeyError! "gpa" doesn't exist
+student.get("gpa")             # None — safe lookup, no crash
+student.get("gpa", 0.0)       # 0.0 — safe lookup with a fallback</code></pre>
+<p><code>[]</code> is strict and crashes on a missing key. <code>.get()</code> is forgiving — it returns <code>None</code>, or whatever default you supply, instead of crashing. Reach for <code>.get()</code> whenever a key might not be there.</p>
+<h3>Adding, updating, checking</h3>
+<pre><code>student["gpa"] = 3.8              # add a new key
+student["age"] = 23                 # update an existing key
+"name" in student                  # True — checks KEYS, not values
+del student["enrolled"]           # remove a key</code></pre>
+<h3>The counting pattern</h3>
+<p>This is the pattern behind the word-frequency lab coming up next, and it's one of the most useful things a dictionary does: count occurrences with <code>.get(key, 0) + 1</code>.</p>
+<div class="trace" data-trace="cs110-dict-count"></div>
+<h3>Looping over a dict</h3>
+<pre><code>prices = {"apple": 0.50, "bread": 2.75, "milk": 1.20}
+
+for key in prices:
+    print(key)                              # just the keys
+
+for key, value in prices.items():
+    print(key, "costs", value)          # keys AND values together</code></pre>
+<h3>List or dict — which one?</h3>
+<pre><code>Order matters, duplicates OK, no natural key       -&gt;  list
+Look things up by name/ID, no meaningful order     -&gt;  dict</code></pre>
+<h3>Try it</h3>
+<pre><code>inventory = {}
+items = ["pen", "pen", "notebook", "pen", "eraser"]
+for item in items:
+    inventory[item] = inventory.get(item, 0) + 1
+
+assert inventory == {"pen": 3, "notebook": 1, "eraser": 1}
+print(inventory)</code></pre>`),
+          L("Lab: word frequency", "lab", 55, "Read a text file and report its ten most common words. Auto-checked.", null,
+            `<p class="lead">Read text, count words, report the most common ones. This is the counting pattern from the last lesson, applied to something real.</p>
+<h3>The task</h3>
+<p>Write <code>word_frequency.py</code> with a function <code>top_words(text, n=10)</code> that returns the <code>n</code> most common words in <code>text</code> as a list of <code>(word, count)</code> tuples, most common first. Words should be lowercased, with surrounding punctuation stripped.</p>
+<h3>Why the function takes a string, not a file</h3>
+<p>Notice the signature takes <code>text</code>, a string — not a filename. That's deliberate: a function that reads a file directly is hard to test (every test would need a temp file on disk). Keep file-reading in <code>main()</code>, and pass plain data into the function you actually test:</p>
+<pre><code>def main():
+    with open("sample.txt", encoding="utf-8") as f:
+        text = f.read()
+    for word, count in top_words(text, 10):
+        print(f"{word}: {count}")
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+<h3>Stripping punctuation and ties</h3>
+<p>Python's standard library already has a ready-made string of every punctuation character: <code>string.punctuation</code>. <code>"hello,".strip(string.punctuation)</code> removes any of those characters from the start and end of a word, so "Hello," and "hello!" and "HELLO" can all be recognized as the same word once lowercased. For ties (two words with equal counts), Python's dict remembers insertion order, and <code>sorted()</code> is <strong>stable</strong> — it never reorders equal elements — so words keep first-seen order among ties for free.</p>
+<h3>The tests</h3>
+<div class="testfile">
+  <div class="tf-name">test_word_frequency.py</div>
+  <pre><code>from word_frequency import top_words
+
+def test_top_words_basic():
+    text = "the cat sat on the mat the cat ran"
+    result = top_words(text, 2)
+    assert result[0] == ("the", 3)
+    assert result[1] == ("cat", 2)
+
+def test_top_words_strips_punctuation():
+    text = "Hello, hello! HELLO world."
+    result = top_words(text, 1)
+    assert result[0] == ("hello", 3)
+
+def test_top_words_respects_n():
+    text = "a b c d e"
+    assert len(top_words(text, 3)) == 3
+
+def test_top_words_empty_string():
+    assert top_words("", 5) == []</code></pre>
+</div>
+<p>Start from the counting pattern in the previous lesson: split the text on whitespace, clean and lowercase each word, and build a dict of counts. The only new step is turning that dict into a sorted list of the top n.</p>
+<details class="reveal">
+  <summary>See one possible solution</summary>
+  <div class="reveal-body">
+    <pre><code>import string
+
+
+def top_words(text, n=10):
+    """Return the n most common words in text as a list of (word, count)
+    tuples, most common first. Words are lowercased; punctuation is
+    stripped; ties keep first-seen order."""
+    counts = {}
+    for raw_word in text.split():
+        word = raw_word.strip(string.punctuation).lower()
+        if not word:
+            continue
+        counts[word] = counts.get(word, 0) + 1
+
+    ordered = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
+    return ordered[:n]
+
+
+def main():
+    with open("sample.txt", encoding="utf-8") as f:
+        text = f.read()
+    for word, count in top_words(text, 10):
+        print(f"{word}: {count}")
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+</details>`)
         ]
       },
       {
         n: "Testing and debugging", weeks: "Weeks 9–10",
         sum: "Prove your code works with pytest, and find out why it doesn't with a debugger instead of guesswork.",
         lessons: [
-          L("Writing tests with pytest", "reading", 26, "The arrange–act–assert shape, naming tests, and running one test vs. the whole file.", ["Write a focused test before fixing a bug", "Read pytest's failure output"], null),
-          L("Debugging methodically", "reading", 22, "Reproduce, isolate, hypothesize, check. Using breakpoints and stepping through code.", ["Use pdb / the editor debugger to inspect state mid-run"], null),
-          L("Lab: fix the failing suite", "lab", 60, "A small program ships with eight failing tests. Make them pass one at a time without deleting any.", null, null)
+          L("Writing tests with pytest", "reading", 26, "The arrange–act–assert shape, naming tests, and running one test vs. the whole file.", ["Write a focused test before fixing a bug", "Read pytest's failure output"],
+            `<p class="lead">You've been reading test files and running them since Unit 1. Now make it formal: why tests are structured the way they are, and how to write your own from scratch.</p>
+<h3>Arrange, act, assert</h3>
+<pre><code>def test_add_two_numbers():
+    a, b = 2, 3               # ARRANGE — set up the inputs
+
+    result = add(a, b)         # ACT — do the one thing being tested
+
+    assert result == 5         # ASSERT — check the outcome</code></pre>
+<p>One test, one behavior. A test named <code>test_add_two_numbers</code> that also happens to check subtraction is confusing when it fails — you won't know which behavior broke. Prefer many small, obviously-named tests over a few large ones.</p>
+<h3>Naming rules pytest expects</h3>
+<pre><code>File names:     test_*.py  or  *_test.py
+Function names: test_*</code></pre>
+<p>pytest finds tests by these naming conventions alone — no registration, no special imports into your own code. That's why every test file in this course starts with <code>from your_module import the_function</code> and nothing else.</p>
+<h3>Running tests</h3>
+<pre class="kbd-term"><code>$ pytest                            # run every test file in the folder
+$ pytest test_fizzbuzz.py           # run just one file
+$ pytest test_fizzbuzz.py::test_fizzbuzz_basic   # run just one test
+$ pytest -v                          # verbose: list each test by name</code></pre>
+<h3>Reading a failure</h3>
+<pre class="kbd-term"><code>$ pytest test_fizzbuzz.py -v
+test_fizzbuzz.py::test_fizzbuzz_basic FAILED
+
+===================== FAILURES =====================
+______________ test_fizzbuzz_basic __________________
+
+    def test_fizzbuzz_basic():
+&gt;       assert fizzbuzz(15)[2] == "Fizz"
+E       AssertionError: assert '3' == 'Fizz'
+
+test_fizzbuzz.py:4: AssertionError
+1 failed in 0.02s</code></pre>
+<p>pytest shows the exact assertion and the <strong>actual</strong> value versus what you expected — here, index 2 held <code>'3'</code> when the test expected <code>'Fizz'</code>. Reading the actual-vs-expected line first, before your source code, is the fastest way to find the bug.</p>
+<h3>Write a failing test on purpose</h3>
+<p>Before you fix any bug, write a small test that reproduces it and watch it fail. Then fix the code and watch the same test pass. This proves the bug is actually fixed — not just "seemed fine when I tried it once" — and it stays in your test file forever, so that exact bug can never silently come back.</p>
+<pre><code>def test_fizzbuzz_multiple_of_fifteen():
+    result = fizzbuzz(15)
+    assert result[14] == "FizzBuzz"   # index 14 is the 15th item</code></pre>`),
+          L("Debugging methodically", "reading", 22, "Reproduce, isolate, hypothesize, check. Using breakpoints and stepping through code.", ["Use pdb / the editor debugger to inspect state mid-run"],
+            `<p class="lead">Guessing wastes time. A short, repeatable procedure finds almost any bug faster than staring at the code hoping to spot it.</p>
+<h3>Reproduce, isolate, hypothesize, check</h3>
+<ol>
+<li><strong>Reproduce</strong> — get the failure to happen reliably, ideally in a one-line test, before touching anything.</li>
+<li><strong>Isolate</strong> — narrow down which function, which line, which value is responsible. Cut the problem in half repeatedly rather than reading every line.</li>
+<li><strong>Hypothesize</strong> — state, in one sentence, what you think is wrong. "I think total isn't being reset between calls."</li>
+<li><strong>Check</strong> — test that specific hypothesis. Right, fix it and confirm with the original failing test. Wrong, you've still eliminated one possibility — form a new hypothesis and repeat.</li>
+</ol>
+<h3>print-tracing</h3>
+<p>The simplest tool: print the values you're unsure about, right where you're unsure about them.</p>
+<pre><code>def total_cost(cart):
+    total = 0
+    for item in cart:
+        print("DEBUG:", item)          # what is item, really?
+        total = total + item["price"]
+    return total</code></pre>
+<p>This works, and everyone uses it. Its weakness: you have to guess in advance what to print, and remember to delete the print statements afterward.</p>
+<h3>breakpoint(): stepping through live</h3>
+<p>Drop <code>breakpoint()</code> into your code and running it drops you into an interactive debugger right at that line, with every variable inspectable:</p>
+<pre><code>def total_cost(cart):
+    total = 0
+    for item in cart:
+        breakpoint()                     # execution pauses HERE
+        total = total + item["price"]
+    return total</code></pre>
+<pre class="kbd-term"><code>$ python cart.py
+&gt; cart.py(4)total_cost()
+-&gt; total = total + item["price"]
+(Pdb) item
+{'name': 'Pencil', 'price': 0.5, 'quantity': 3}
+(Pdb) total
+0
+(Pdb) c          # continue to the next breakpoint (or the end)</code></pre>
+<p>At the <code>(Pdb)</code> prompt, type any variable name to inspect it, or a short expression. <code>n</code> steps to the next line, <code>c</code> continues, <code>q</code> quits. This beats print-tracing once a bug is hard to reach — you inspect state live instead of guessing what to print ahead of time.</p>
+<h3>Read the traceback first</h3>
+<p>Before reaching for either tool: read the full traceback from the bottom up (see the previous unit's lesson on the call stack). It often tells you the exact line and the exact kind of mistake — you don't always need to add debugging code at all.</p>
+<h3>A worked hunt</h3>
+<p>A test says <code>format_price(3)</code> should be <code>"$3.00"</code> but gets <code>"$3"</code>.</p>
+<ol>
+<li><strong>Reproduce:</strong> the failing test already does this — no extra work.</li>
+<li><strong>Isolate:</strong> the bug is entirely inside <code>format_price</code>; nothing else is involved.</li>
+<li><strong>Hypothesize:</strong> "it's using str() instead of formatting to two decimal places."</li>
+<li><strong>Check:</strong> read the function — <code>return "$" + str(amount)</code> confirms it. Fix: <code>return "\${:.2f}".format(amount)</code>. Rerun the test — it passes.</li>
+</ol>`),
+          L("Lab: fix the failing suite", "lab", 60, "A small program ships with several failing tests across four real bugs. Fix each one without deleting any test.", null,
+            `<p class="lead">A small shopping-cart module ships with real bugs and a full test suite. Make every test pass, one at a time, without deleting any of them.</p>
+<h3>The code, as shipped</h3>
+<pre><code># cart.py
+
+def add_item(cart, name, price, quantity=1):
+    cart.append({"name": name, "price": price})
+    return cart
+
+
+def total_cost(cart):
+    total = 0
+    for item in cart:
+        total = total + item["price"]
+    return total
+
+
+def apply_discount(total, percent):
+    return total - (total * percent)
+
+
+def format_price(amount):
+    return "$" + str(amount)</code></pre>
+<h3>The tests</h3>
+<div class="testfile">
+  <div class="tf-name">test_cart.py</div>
+  <pre><code>from cart import add_item, total_cost, apply_discount, format_price
+
+def test_add_item_appends():
+    cart = []
+    add_item(cart, "Pencil", 0.50, 3)
+    assert len(cart) == 1
+
+def test_add_item_default_quantity():
+    cart = []
+    add_item(cart, "Notebook", 2.00)
+    assert cart[0]["quantity"] == 1
+
+def test_total_cost_single_item():
+    cart = [{"name": "Pencil", "price": 0.50, "quantity": 3}]
+    assert total_cost(cart) == 1.50
+
+def test_total_cost_multiple_items():
+    cart = [
+        {"name": "Pencil", "price": 0.50, "quantity": 2},
+        {"name": "Notebook", "price": 2.00, "quantity": 1},
+    ]
+    assert total_cost(cart) == 3.00
+
+def test_total_cost_empty_cart():
+    assert total_cost([]) == 0
+
+def test_apply_discount_ten_percent():
+    assert apply_discount(100, 10) == 90
+
+def test_apply_discount_zero_percent():
+    assert apply_discount(50, 0) == 50
+
+def test_format_price_two_decimals():
+    assert format_price(3) == "$3.00"</code></pre>
+</div>
+<h3>Running the suite as shipped</h3>
+<pre class="kbd-term"><code>$ pytest test_cart.py -v
+test_cart.py::test_add_item_appends PASSED
+test_cart.py::test_add_item_default_quantity FAILED
+test_cart.py::test_total_cost_single_item FAILED
+test_cart.py::test_total_cost_multiple_items FAILED
+test_cart.py::test_total_cost_empty_cart PASSED
+test_cart.py::test_apply_discount_ten_percent FAILED
+test_cart.py::test_apply_discount_zero_percent PASSED
+test_cart.py::test_format_price_two_decimals FAILED
+
+3 passed, 5 failed in 0.02s</code></pre>
+<p>Five failures, four real bugs — one bug causes two failures. Fix them one at a time, rerunning just the failing test each time, not the whole suite, so you're never staring at five red lines at once.</p>
+<h3>Hunting the first one</h3>
+<pre class="kbd-term"><code>$ pytest test_cart.py::test_add_item_default_quantity -v
+&gt;       assert cart[0]["quantity"] == 1
+E       KeyError: 'quantity'</code></pre>
+<p>Apply the procedure from the last lesson. Reproduce: already done, that's the test. Isolate: the error is in <code>add_item</code> — the dict it appends never mentions <code>"quantity"</code> at all. Hypothesize: "the function forgot to store the quantity it receives." Check: read <code>add_item</code> — confirmed, the parameter is accepted but never used. That single fix also clears <code>test_total_cost_single_item</code> and <code>test_total_cost_multiple_items</code>, which depend on quantity being stored and multiplied in.</p>
+<p>Do the same for <code>apply_discount</code> (compare the formula to what "10 percent off 100" should mean) and <code>format_price</code> (compare its output to what the test expects, character for character). Rerun the full suite only at the end, to confirm all eight pass together.</p>
+<details class="reveal">
+  <summary>See one possible solution</summary>
+  <div class="reveal-body">
+    <pre><code># cart.py  (fixed)
+
+def add_item(cart, name, price, quantity=1):
+    cart.append({"name": name, "price": price, "quantity": quantity})
+    return cart
+
+
+def total_cost(cart):
+    total = 0
+    for item in cart:
+        total = total + item["price"] * item["quantity"]
+    return total
+
+
+def apply_discount(total, percent):
+    return total - (total * percent / 100)
+
+
+def format_price(amount):
+    return "\${:.2f}".format(amount)</code></pre>
+    <pre class="kbd-term"><code>$ pytest test_cart.py -v
+8 passed in 0.02s</code></pre>
+  </div>
+</details>`)
         ]
       }
     ]
@@ -2187,11 +3093,17 @@ const DISCLOSURES = [
    ============================================================ */
 const LS_KEY = "codeu.v1";
 function loadState() {
+  let s = null;
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) s = JSON.parse(raw);
   } catch (e) {}
-  return { enrolled: [], done: {} };
+  s = s || {};
+  if (!Array.isArray(s.enrolled)) s.enrolled = [];
+  if (!s.done || typeof s.done !== "object") s.done = {};
+  if (!Array.isArray(s.certEnrolled)) s.certEnrolled = [];
+  if (!s.account) s.account = null;
+  return s;
 }
 function saveState() {
   try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
@@ -2220,6 +3132,13 @@ document.getElementById("themeBtn").addEventListener("click", () => {
   applyTheme(theme);
 });
 
+document.getElementById("modalBackdrop").addEventListener("click", (e) => {
+  if (e.target.id === "modalBackdrop") closeModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !document.getElementById("modalBackdrop").hidden) closeModal();
+});
+
 /* ============================================================
    Helpers
    ============================================================ */
@@ -2244,6 +3163,112 @@ function toggleEnroll(course) {
   if (isEnrolled(course)) state.enrolled = state.enrolled.filter((c) => c !== course.code);
   else state.enrolled.push(course.code);
   saveState();
+}
+function enrollOn(course) {
+  if (!isEnrolled(course)) state.enrolled.push(course.code);
+  saveState();
+}
+
+/* ---- prototype accounts & certificate enrollment ---- */
+function hasAccount() { return !!state.account; }
+function createAccount(firstName, lastName, email) {
+  state.account = { firstName: firstName.trim(), lastName: (lastName || "").trim(), email: email.trim(), createdAt: Date.now() };
+  saveState();
+}
+function signOut() { state.account = null; saveState(); render(); }
+function isCertEnrolled(cert) { return state.certEnrolled.includes(cert.slug); }
+function enrollCertificate(cert) {
+  if (!state.certEnrolled.includes(cert.slug)) state.certEnrolled.push(cert.slug);
+  certCourses(cert).forEach((c) => enrollOn(c));
+  saveState();
+}
+function certProgress(cert) {
+  const courses = certCourses(cert);
+  let done = 0, total = 0;
+  courses.forEach((c) => { const p = courseProgress(c); done += p.done; total += p.total; });
+  return { done, total, pct: total ? Math.round((done / total) * 100) : 0 };
+}
+function nextForCert(cert) {
+  const courses = certCourses(cert);
+  for (const c of courses) {
+    const next = flatLessons(c).find((x) => !doneSet(c).has(x.id));
+    if (next) return { c, id: next.id };
+  }
+  const last = courses[courses.length - 1];
+  const firstLesson = last ? flatLessons(last)[0] : null;
+  return last && firstLesson ? { c: last, id: firstLesson.id } : null;
+}
+
+/* ---- modal ---- */
+function openModal(html) {
+  document.getElementById("modalBox").innerHTML = html;
+  document.getElementById("modalBackdrop").hidden = false;
+  document.body.style.overflow = "hidden";
+  const f = document.getElementById("modalBox").querySelector("input, button");
+  if (f) f.focus();
+}
+function closeModal() {
+  document.getElementById("modalBackdrop").hidden = true;
+  document.body.style.overflow = "";
+}
+function accountModalHTML(context) {
+  return `
+    <p class="eyebrow">Create your student account</p>
+    <h2 id="modalTitle">Almost there</h2>
+    <p class="sub">${esc(context)} This demo doesn't process payment yet — Stripe checkout is coming. Creating an account unlocks your classroom now; it's a lightweight prototype account stored only in this browser.</p>
+    <form id="accountForm">
+      <label for="accFirst">First name</label>
+      <input id="accFirst" required autocomplete="given-name" />
+      <label for="accLast">Last name</label>
+      <input id="accLast" autocomplete="family-name" />
+      <label for="accEmail">Email</label>
+      <input id="accEmail" type="email" required autocomplete="email" />
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="accCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create account &amp; enroll</button>
+      </div>
+    </form>`;
+}
+function startEnrollFlow(kind, target) {
+  const doEnroll = () => { if (kind === "course") enrollOn(target); else enrollCertificate(target); };
+  if (hasAccount()) { doEnroll(); render(); return; }
+  const context = kind === "certificate"
+    ? `You're enrolling in ${target.title}.`
+    : `You're enrolling in ${target.code} — ${target.title}.`;
+  openModal(accountModalHTML(context));
+  const form = document.getElementById("accountForm");
+  document.getElementById("accCancel").addEventListener("click", closeModal);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const first = document.getElementById("accFirst").value.trim();
+    const last = document.getElementById("accLast").value.trim();
+    const email = document.getElementById("accEmail").value.trim();
+    if (!first || !email) return;
+    createAccount(first, last, email);
+    doEnroll();
+    closeModal();
+    render();
+  });
+}
+function onEnrollClick(course) {
+  if (isEnrolled(course)) { toggleEnroll(course); render(); }
+  else { startEnrollFlow("course", course); }
+}
+function onCertEnrollClick(cert) {
+  if (isCertEnrolled(cert)) { location.hash = "#/classroom"; }
+  else { startEnrollFlow("certificate", cert); }
+}
+function renderAcctChip() {
+  const el = document.getElementById("acctChip");
+  if (!el) return;
+  if (state.account) {
+    el.innerHTML = `<span class="who">Hi, ${esc(state.account.firstName)}</span><a href="#/classroom" class="btn btn-ghost acct-btn">My Classroom</a><button type="button" class="link" id="signOutBtn">Sign out</button>`;
+    document.getElementById("signOutBtn").addEventListener("click", () => {
+      if (confirm("Sign out? Your enrollment and progress stay saved in this browser.")) signOut();
+    });
+  } else {
+    el.innerHTML = `<a href="#/classroom" class="btn btn-ghost acct-btn">Sign in</a>`;
+  }
 }
 function toggleDone(course, id) {
   const set = new Set(state.done[course.code] || []);
@@ -2321,6 +3346,159 @@ async function getSample() {
 const ASK = { key: null, turns: [] };
 
 /* ============================================================
+   Execution trace widget — a pre-authored, honest, line-by-line
+   walkthrough of a specific program (not a live interpreter).
+   Used for the concepts beginners get wrong first: binding,
+   loops, function calls, and the call stack.
+   ============================================================ */
+function fmtVal(v) {
+  if (typeof v === "string") return "'" + v + "'";
+  if (typeof v === "boolean") return v ? "True" : "False";
+  if (v === null || v === undefined) return "None";
+  if (Array.isArray(v)) return "[" + v.map(fmtVal).join(", ") + "]";
+  if (typeof v === "object") return "{" + Object.entries(v).map(([k, val]) => "'" + k + "': " + fmtVal(val)).join(", ") + "}";
+  return String(v);
+}
+
+const TRACES = {
+  "cs110-values": {
+    code: ["a = 3", "b = 4", "c = a + b", "print(c)"],
+    steps: [
+      { line: -1, vars: {}, output: [], note: "Nothing has run yet. Press Next to execute the first line." },
+      { line: 0, vars: { a: 3 }, output: [], note: "Line 1 runs. Python evaluates 3, then makes the name a point to it." },
+      { line: 1, vars: { a: 3, b: 4 }, output: [], note: "Line 2 runs the same way: b now names 4." },
+      { line: 2, vars: { a: 3, b: 4, c: 7 }, output: [], note: "Line 3 evaluates a + b first — 3 + 4 = 7 — then names the result c." },
+      { line: 3, vars: { a: 3, b: 4, c: 7 }, output: ["7"], note: "Line 4 runs print(c). Python looks up what c names — 7 — and writes it out." }
+    ]
+  },
+  "cs110-loop-sum": {
+    code: ["numbers = [10, 20, 30]", "total = 0", "for n in numbers:", "    total = total + n", "print(total)"],
+    steps: [
+      { line: -1, vars: {}, output: [], note: "Nothing has run yet." },
+      { line: 0, vars: { numbers: [10, 20, 30] }, output: [], note: "Line 1: numbers names a list of three values." },
+      { line: 1, vars: { numbers: [10, 20, 30], total: 0 }, output: [], note: "Line 2: total starts at 0 — this is the accumulator that will collect the sum." },
+      { line: 2, vars: { numbers: [10, 20, 30], total: 0, n: 10 }, output: [], note: "Line 3 starts the loop. n takes the first value in numbers: 10." },
+      { line: 3, vars: { numbers: [10, 20, 30], total: 10, n: 10 }, output: [], note: "Line 4 runs: total becomes total + n = 0 + 10 = 10." },
+      { line: 2, vars: { numbers: [10, 20, 30], total: 10, n: 20 }, output: [], note: "Back to the loop header. n takes the next value: 20." },
+      { line: 3, vars: { numbers: [10, 20, 30], total: 30, n: 20 }, output: [], note: "Line 4 again: total becomes 10 + 20 = 30." },
+      { line: 2, vars: { numbers: [10, 20, 30], total: 30, n: 30 }, output: [], note: "Loop header again. n takes the last value: 30." },
+      { line: 3, vars: { numbers: [10, 20, 30], total: 60, n: 30 }, output: [], note: "Line 4: total becomes 30 + 30 = 60." },
+      { line: 2, vars: { numbers: [10, 20, 30], total: 60, n: 30 }, output: [], note: "Loop header again — numbers has no more values, so the loop ends." },
+      { line: 4, vars: { numbers: [10, 20, 30], total: 60, n: 30 }, output: ["60"], note: "Line 5 runs: print(total) writes 60." }
+    ]
+  },
+  "cs110-func-call": {
+    code: ["def square(x):", "    result = x * x", "    return result", "", "value = square(5)", "print(value)"],
+    steps: [
+      { line: -1, vars: {}, output: [], note: "Nothing has run yet. Defining a function does not run its body — that happens later, when it's called." },
+      { line: 0, vars: {}, output: [], stack: ["main"], note: "Line 1 runs: Python creates the function square and names it, but does not run the body yet." },
+      { line: 4, vars: { x: 5 }, output: [], stack: ["main", "square(x=5)"], note: "Line 5 calls square(5). Execution jumps INTO the function; x is bound to 5 in a brand-new, separate scope." },
+      { line: 1, vars: { x: 5, result: 25 }, output: [], stack: ["main", "square(x=5)"], note: "Inside square, line 2 runs: result = x * x = 5 * 5 = 25." },
+      { line: 2, vars: { x: 5, result: 25 }, output: [], stack: ["main", "square(x=5)"], note: "Line 3 runs: return sends 25 back to the caller. x and result are about to disappear." },
+      { line: 4, vars: { value: 25 }, output: [], stack: ["main"], note: "Back in main: value now names 25. The square(x=5) frame is gone — x and result no longer exist anywhere." },
+      { line: 5, vars: { value: 25 }, output: ["25"], stack: ["main"], note: "Line 6 runs: print(value) writes 25." }
+    ]
+  },
+  "cs110-call-stack": {
+    code: ["def double(n):", "    return n * 2", "", "def quadruple(n):", "    doubled_once = double(n)", "    doubled_twice = double(doubled_once)", "    return doubled_twice", "", "print(quadruple(3))"],
+    steps: [
+      { line: -1, vars: {}, output: [], stack: ["main"], note: "Nothing has run yet." },
+      { line: 0, vars: {}, output: [], stack: ["main"], note: "Python defines double." },
+      { line: 3, vars: {}, output: [], stack: ["main"], note: "Python defines quadruple." },
+      { line: 8, vars: { n: 3 }, output: [], stack: ["main", "quadruple(n=3)"], note: "Line 9 calls quadruple(3). A new frame — quadruple(n=3) — is pushed onto the call stack." },
+      { line: 4, vars: { n: 3 }, output: [], stack: ["main", "quadruple(n=3)", "double(n=3)"], note: "Inside quadruple, line 5 calls double(n). A THIRD frame is pushed — the stack is now three deep." },
+      { line: 1, vars: { n: 3 }, output: [], stack: ["main", "quadruple(n=3)", "double(n=3)"], note: "Inside double, line 2 returns n * 2 = 6. This frame is about to be popped." },
+      { line: 4, vars: { n: 3, doubled_once: 6 }, output: [], stack: ["main", "quadruple(n=3)"], note: "Back in quadruple: doubled_once now names 6. The double frame is gone — back to two deep." },
+      { line: 5, vars: { n: 6 }, output: [], stack: ["main", "quadruple(n=3)", "double(n=6)"], note: "Line 6 calls double again, this time with 6. A new double frame is pushed — three deep again." },
+      { line: 1, vars: { n: 6 }, output: [], stack: ["main", "quadruple(n=3)", "double(n=6)"], note: "return n * 2 = 12. This double frame is about to be popped." },
+      { line: 5, vars: { n: 3, doubled_once: 6, doubled_twice: 12 }, output: [], stack: ["main", "quadruple(n=3)"], note: "Back in quadruple: doubled_twice now names 12." },
+      { line: 6, vars: { n: 3, doubled_once: 6, doubled_twice: 12 }, output: [], stack: ["main", "quadruple(n=3)"], note: "Line 7 returns 12. The quadruple frame is about to be popped — the stack will shrink back to just main." },
+      { line: 8, vars: {}, output: ["12"], stack: ["main"], note: "quadruple(3) evaluated to 12; print writes it. Every frame it used has been popped — the stack is back to just main." }
+    ]
+  },
+  "cs110-list-build": {
+    code: ["squares = []", "for n in range(1, 5):", "    squares.append(n * n)", "print(squares)"],
+    steps: [
+      { line: -1, vars: {}, output: [], note: "Nothing has run yet." },
+      { line: 0, vars: { squares: [] }, output: [], note: "Line 1: squares starts as an empty list." },
+      { line: 1, vars: { squares: [], n: 1 }, output: [], note: "Line 2 starts the loop. range(1, 5) produces 1, 2, 3, 4. n takes the first value: 1." },
+      { line: 2, vars: { squares: [1], n: 1 }, output: [], note: "Line 3: n * n = 1 is appended. squares grows to [1]." },
+      { line: 1, vars: { squares: [1], n: 2 }, output: [], note: "Loop header again: n takes 2." },
+      { line: 2, vars: { squares: [1, 4], n: 2 }, output: [], note: "n * n = 4 is appended: [1, 4]." },
+      { line: 1, vars: { squares: [1, 4], n: 3 }, output: [], note: "n takes 3." },
+      { line: 2, vars: { squares: [1, 4, 9], n: 3 }, output: [], note: "9 is appended: [1, 4, 9]." },
+      { line: 1, vars: { squares: [1, 4, 9], n: 4 }, output: [], note: "n takes 4 — the last value range(1, 5) produces." },
+      { line: 2, vars: { squares: [1, 4, 9, 16], n: 4 }, output: [], note: "16 is appended: [1, 4, 9, 16]." },
+      { line: 1, vars: { squares: [1, 4, 9, 16], n: 4 }, output: [], note: "Loop header again — range is exhausted, so the loop ends." },
+      { line: 3, vars: { squares: [1, 4, 9, 16], n: 4 }, output: ["[1, 4, 9, 16]"], note: "print(squares) writes the finished list." }
+    ]
+  },
+  "cs110-dict-count": {
+    code: ["votes = ['red', 'blue', 'red', 'green', 'blue', 'red']", "counts = {}", "for color in votes:", "    counts[color] = counts.get(color, 0) + 1", "print(counts)"],
+    steps: [
+      { line: -1, vars: {}, output: [], note: "Nothing has run yet." },
+      { line: 0, vars: { votes: ["red", "blue", "red", "green", "blue", "red"] }, output: [], note: "Line 1: votes names a list of six strings." },
+      { line: 1, vars: { votes: ["red", "blue", "red", "green", "blue", "red"], counts: {} }, output: [], note: "Line 2: counts starts as an empty dictionary." },
+      { line: 2, vars: { counts: {}, color: "red" }, output: [], note: "Line 3 starts the loop. color takes the first value: 'red'." },
+      { line: 3, vars: { counts: { red: 1 }, color: "red" }, output: [], note: "Line 4: counts.get('red', 0) is 0 (not seen yet), plus 1 is 1. counts['red'] = 1." },
+      { line: 2, vars: { counts: { red: 1 }, color: "blue" }, output: [], note: "color takes 'blue'." },
+      { line: 3, vars: { counts: { red: 1, blue: 1 }, color: "blue" }, output: [], note: "'blue' hasn't been seen either: counts['blue'] = 1." },
+      { line: 2, vars: { counts: { red: 1, blue: 1 }, color: "red" }, output: [], note: "color takes 'red' again." },
+      { line: 3, vars: { counts: { red: 2, blue: 1 }, color: "red" }, output: [], note: "This time counts.get('red', 0) is 1, plus 1 is 2. counts['red'] = 2." },
+      { line: 2, vars: { counts: { red: 2, blue: 1 }, color: "green" }, output: [], note: "color takes 'green'." },
+      { line: 3, vars: { counts: { red: 2, blue: 1, green: 1 }, color: "green" }, output: [], note: "'green' is new: counts['green'] = 1." },
+      { line: 2, vars: { counts: { red: 2, blue: 1, green: 1 }, color: "blue" }, output: [], note: "color takes 'blue'." },
+      { line: 3, vars: { counts: { red: 2, blue: 2, green: 1 }, color: "blue" }, output: [], note: "counts['blue'] becomes 2." },
+      { line: 2, vars: { counts: { red: 2, blue: 2, green: 1 }, color: "red" }, output: [], note: "color takes the last value: 'red'." },
+      { line: 3, vars: { counts: { red: 3, blue: 2, green: 1 }, color: "red" }, output: [], note: "counts['red'] becomes 3." },
+      { line: 2, vars: { counts: { red: 3, blue: 2, green: 1 }, color: "red" }, output: [], note: "Loop header again — votes is exhausted, so the loop ends." },
+      { line: 4, vars: { counts: { red: 3, blue: 2, green: 1 }, color: "red" }, output: ["{'red': 3, 'blue': 2, 'green': 1}"], note: "print(counts) writes the finished dictionary." }
+    ]
+  }
+};
+
+function renderTrace(el) {
+  const t = TRACES[el.dataset.trace];
+  if (!t) return;
+  let i = 0;
+  function draw() {
+    const step = t.steps[i];
+    const codeHtml = t.code.map((ln, idx) =>
+      `<div class="tr-line${idx === step.line ? " cur" : ""}"><span class="tr-no">${idx + 1}</span><span>${esc(ln) || "&nbsp;"}</span></div>`
+    ).join("");
+    const varKeys = Object.keys(step.vars || {});
+    const varsHtml = varKeys.length
+      ? varKeys.map((k) => `<div class="tr-var"><span class="tr-vn">${esc(k)}</span><span class="tr-vv">${esc(fmtVal(step.vars[k]))}</span></div>`).join("")
+      : `<div class="tr-empty">no variables yet</div>`;
+    const stackHtml = step.stack
+      ? `<div class="tr-panel"><b>Call stack</b>${step.stack.map((f, idx, arr) => `<div class="tr-frame${idx === arr.length - 1 ? " top" : ""}">${esc(f)}</div>`).join("")}</div>`
+      : "";
+    const outText = (step.output && step.output.length) ? step.output.join("\n") : "(no output yet)";
+    el.innerHTML = `
+      <div class="tr-head"><span class="tr-label">Trace</span><span class="tr-step">Step ${i + 1} of ${t.steps.length}</span></div>
+      <div class="tr-body">
+        <pre class="tr-code">${codeHtml}</pre>
+        <div class="tr-side">
+          <div class="tr-panel"><b>Variables</b>${varsHtml}</div>
+          ${stackHtml}
+          <div class="tr-panel"><b>Output</b><pre class="tr-out">${esc(outText)}</pre></div>
+        </div>
+      </div>
+      <p class="tr-note">${esc(step.note)}</p>
+      <div class="tr-controls">
+        <button type="button" class="btn btn-ghost" data-a="reset">⟲ Reset</button>
+        <button type="button" class="btn btn-ghost" data-a="prev" ${i === 0 ? "disabled" : ""}>← Back</button>
+        <button type="button" class="btn btn-primary" data-a="next" ${i === t.steps.length - 1 ? "disabled" : ""}>Next →</button>
+      </div>`;
+    el.querySelector('[data-a="prev"]').addEventListener("click", () => { if (i > 0) { i--; draw(); } });
+    el.querySelector('[data-a="next"]').addEventListener("click", () => { if (i < t.steps.length - 1) { i++; draw(); } });
+    el.querySelector('[data-a="reset"]').addEventListener("click", () => { i = 0; draw(); });
+  }
+  draw();
+}
+function mountTraces() { document.querySelectorAll(".trace[data-trace]").forEach(renderTrace); }
+
+/* ============================================================
    Sidebar nav
    ============================================================ */
 function renderNav(route) {
@@ -2334,7 +3512,7 @@ function renderNav(route) {
     <a href="#/faculty" ${cc("faculty")}>AI&nbsp;Faculty</a>
     <a href="#/accreditation" ${cc("accreditation")}>Accreditation</a>
     <a href="#/degrees" ${cc("degrees") || degCur}>Degrees&nbsp;·&nbsp;Soon</a>
-    <a href="#/mycourses" ${cc("mycourses")}>My&nbsp;Courses</a>
+    <a href="#/classroom" ${cc("classroom")}>My&nbsp;Classroom</a>
   `;
 }
 
@@ -2503,35 +3681,75 @@ function viewCatalog(params) {
   ${campusFoot()}`;
 }
 
-function viewMyCourses() {
-  const enrolled = state.enrolled.map(courseBy).filter(Boolean);
-  let body;
-  if (!enrolled.length) {
-    body = `<div class="empty" style="margin-top:24px">
-      You have not enrolled in any courses yet.<br/><br/>
-      <a class="btn btn-primary" href="#/catalog">Browse the catalog</a>
-    </div>`;
-  } else {
-    body = `<div class="mc-list">${enrolled.map((c) => {
-      const p = courseProgress(c);
-      const next = flatLessons(c).find((x) => !doneSet(c).has(x.id));
-      const target = next ? `#/course/${c.slug}/lesson/${next.id}` : `#/course/${c.slug}`;
-      return `<a class="mc-item" href="${target}">
-        <div class="ring-wrap"><div class="ring" style="--p:${p.pct}"></div><span>${p.pct}%</span></div>
-        <div>
-          <span class="code">${esc(c.code)}</span>
-          <h3>${esc(c.title)}</h3>
-          <div class="bar"><i style="width:${p.pct}%"></i></div>
-        </div>
-        <div class="pct">${p.done}/${p.total}<br/><span style="font-size:var(--step--2);color:var(--ink-faint)">${next ? "Resume →" : "Review →"}</span></div>
-      </a>`;
-    }).join("")}</div>`;
+function mcItemHTML(c) {
+  const p = courseProgress(c);
+  const next = flatLessons(c).find((x) => !doneSet(c).has(x.id));
+  const target = next ? `#/course/${c.slug}/lesson/${next.id}` : `#/course/${c.slug}`;
+  return `<a class="mc-item" href="${target}">
+    <div class="ring-wrap"><div class="ring" style="--p:${p.pct}"></div><span>${p.pct}%</span></div>
+    <div>
+      <span class="code">${esc(c.code)}</span>
+      <h3>${esc(c.title)}</h3>
+      <div class="bar"><i style="width:${p.pct}%"></i></div>
+    </div>
+    <div class="pct">${p.done}/${p.total}<br/><span style="font-size:var(--step--2);color:var(--ink-faint)">${next ? "Resume →" : "Review →"}</span></div>
+  </a>`;
+}
+
+function viewClassroom() {
+  if (!hasAccount()) {
+    return `
+    <div class="breadcrumb"><a href="#/">Campus</a> <span aria-hidden="true">/</span> My classroom</div>
+    <h1 style="font-size:var(--step-3)">Your classroom is waiting</h1>
+    <p class="lede" style="margin:14px 0 22px">Once you enroll in a certificate or a course, your prototype account and progress live here. No payment is processed yet — enrolling now just unlocks the material.</p>
+    <div class="home-cta">
+      <a class="btn btn-primary" href="#/certificates">Browse certificates</a>
+      <a class="btn btn-ghost" href="#/catalog">Browse courses</a>
+    </div>
+    ${campusFoot()}`;
   }
+
+  const a = state.account;
+  const certs = state.certEnrolled.map(certBy).filter(Boolean);
+  const certCourseCodes = new Set(certs.flatMap((ct) => ct.courses));
+  const soloCourses = state.enrolled.map(courseBy).filter((c) => c && !certCourseCodes.has(c.code));
+
+  const certBlocks = certs.map((ct) => {
+    const cp = certProgress(ct);
+    const nx = nextForCert(ct);
+    const rows = certCourses(ct).map((c) => {
+      const p = courseProgress(c);
+      const isNext = nx && nx.c.code === c.code && p.pct < 100;
+      return `<a class="path-item${p.pct === 100 ? " done" : ""}" href="#/course/${c.slug}">
+        <span class="pn">${p.pct === 100 ? "✓" : ""}</span>
+        <div><h4>${esc(c.code)} — ${esc(c.title)}</h4><div class="pd">${p.done}/${p.total} lessons</div></div>
+        <span class="pp">${isNext ? "Continue →" : (p.pct === 100 ? "Complete" : p.pct + "%")}</span>
+      </a>`;
+    }).join("");
+    return `<section class="subsection">
+      <div class="section-head">
+        <h2>${esc(ct.title)}</h2>
+        <div class="ring-wrap"><div class="ring" style="--p:${cp.pct}"></div><span>${cp.pct}%</span></div>
+      </div>
+      <div class="path">${rows}</div>
+      ${nx ? `<div class="home-cta" style="margin-top:16px"><a class="btn btn-primary" href="#/course/${nx.c.slug}/lesson/${nx.id}">Continue: ${esc(nx.c.code)} →</a></div>` : ""}
+    </section>`;
+  }).join("");
+
   return `
-  <div class="breadcrumb"><a href="#/">Campus</a> <span aria-hidden="true">/</span> My courses</div>
-  <h1 style="font-size:var(--step-3)">My courses</h1>
-  <p class="lede" style="margin:14px 0 0">${enrolled.length} enrolled. Pick up where you left off.</p>
-  ${body}
+  <div class="breadcrumb"><a href="#/">Campus</a> <span aria-hidden="true">/</span> My classroom</div>
+  <h1 style="font-size:var(--step-3)">Welcome back, ${esc(a.firstName)}.</h1>
+  <p class="lede" style="margin:14px 0 0">${esc(a.email)} · ${state.enrolled.length} course${state.enrolled.length === 1 ? "" : "s"} enrolled${certs.length ? " · " + certs.length + " certificate" + (certs.length === 1 ? "" : "s") : ""}.</p>
+
+  ${certBlocks || ""}
+
+  ${soloCourses.length ? `<section class="subsection">
+    <h2>${certs.length ? "Individual courses" : "Your courses"}</h2>
+    <div class="mc-list">${soloCourses.map(mcItemHTML).join("")}</div>
+  </section>` : ""}
+
+  ${!certs.length && !soloCourses.length ? `<div class="empty" style="margin-top:24px">Nothing enrolled yet.<br/><br/><a class="btn btn-primary" href="#/certificates">Browse certificates</a></div>` : ""}
+
   ${campusFoot()}`;
 }
 
@@ -2880,10 +4098,21 @@ function viewCertificate(slug) {
       <div><b>Format</b>100% online · open enrollment · self-paced with cohort options</div>
       ${stack ? `<div><b>Stacks toward</b><a href="#/program/${stack.slug}">${esc(stack.credential.replace(/ \(.*\)/, ""))}</a> (in development)</div>` : ""}
     </div>
-    <div class="home-cta" style="margin-top:22px">
-      ${first ? `<a class="btn btn-primary" href="#/course/${first.slug}">Start with ${esc(first.code)} →</a>` : ""}
-      <a class="btn btn-ghost" href="#/certificates">All certificates</a>
-    </div>
+    ${(() => {
+      const enrolled = isCertEnrolled(ct);
+      const cp = enrolled ? certProgress(ct) : null;
+      return `<div class="enroll-row">
+        ${enrolled
+          ? `<div class="enroll-status">
+               <div class="ring-wrap"><div class="ring" style="--p:${cp.pct}"></div><span>${cp.pct}%</span></div>
+               <span class="txt"><b>${cp.done} of ${cp.total}</b> lessons complete across this certificate</span>
+             </div>
+             <a class="btn btn-primary" href="#/classroom">Go to your classroom →</a>`
+          : `<button class="btn btn-primary" id="certEnrollBtn" type="button">Enroll in this certificate — ${usd(certPrice(ct))}</button>
+             ${first ? `<a class="btn btn-ghost" href="#/course/${first.slug}">Preview ${esc(first.code)} →</a>` : ""}`}
+      </div>
+      <p class="oh-note" style="margin-top:14px">No payment is processed in this demo — Stripe checkout is coming. Enrolling creates a prototype student account and unlocks every course in this certificate.</p>`;
+    })()}
   </div>
 
   <section class="subsection">
@@ -3309,7 +4538,7 @@ function parseRoute() {
 
   if (segs.length === 0) return { name: "home" };
   if (segs[0] === "catalog") return { name: "catalog", params };
-  if (segs[0] === "mycourses") return { name: "mycourses" };
+  if (segs[0] === "mycourses" || segs[0] === "classroom") return { name: "classroom" };
   if (segs[0] === "program" && segs[1]) return { name: "program", slug: segs[1] };
   if (segs[0] === "accreditation") return { name: "accreditation" };
   if (segs[0] === "military") return { name: "military" };
@@ -3422,7 +4651,7 @@ function render() {
   switch (route.name) {
     case "home": html = viewHome(); break;
     case "catalog": html = viewCatalog(route.params); break;
-    case "mycourses": html = viewMyCourses(); break;
+    case "mycourses": case "classroom": html = viewClassroom(); break;
     case "program": html = viewProgram(route.slug); break;
     case "accreditation": html = viewAccreditation(); break;
     case "military": html = viewMilitary(); break;
@@ -3439,17 +4668,22 @@ function render() {
   }
   view.innerHTML = html;
   renderNav(route);
+  renderAcctChip();
   window.scrollTo(0, 0);
   document.getElementById("main").focus?.();
 
   // wire interactions
   const enrollBtn = document.getElementById("enrollBtn");
-  if (enrollBtn) enrollBtn.addEventListener("click", () => { toggleEnroll(courseBy(route.code)); render(); });
+  if (enrollBtn) enrollBtn.addEventListener("click", () => onEnrollClick(courseBy(route.code)));
+
+  const certEnrollBtn = document.getElementById("certEnrollBtn");
+  if (certEnrollBtn) certEnrollBtn.addEventListener("click", () => onCertEnrollClick(certBy(route.slug)));
 
   const doneBtn = document.getElementById("doneBtn");
   if (doneBtn) doneBtn.addEventListener("click", () => { toggleDone(courseBy(route.code), route.lesson); render(); });
 
   if (document.getElementById("ohForm")) setupOfficeHours();
+  mountTraces();
 
   const search = document.getElementById("catSearch");
   if (search) {
