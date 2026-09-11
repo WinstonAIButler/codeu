@@ -813,42 +813,199 @@ const COURSES = [
     code: "CS 110", slug: "cs110", title: "Programming I — Python",
     track: "foundations", level: 100, credits: 4, term: "Autumn 2026",
     instructor: "Prof. Dana Okafor", prereqs: [],
-    desc: "Your first course in writing software. You learn to think in small, testable steps and to turn a plain-language problem into a working Python program.",
+    desc: "Your first course in writing software, from an empty computer to a real, tested, version-controlled application. You'll set up a terminal and Python, learn Git and GitHub from your very first commit, and build one command-line app — an expense tracker — a little further every module.",
     outcomes: [
+      "Set up a terminal, install Python, and run programs from the command line on your own computer.",
+      "Use Git and GitHub to track every change you make and host your code online.",
       "Read, trace, and predict the output of small Python programs.",
       "Decompose a problem into functions with clear inputs and outputs.",
-      "Use lists, dictionaries, and loops to model everyday data.",
+      "Use lists and dictionaries to model real data, and files to make it persist.",
       "Write and run automated tests with pytest before claiming code works.",
       "Use a debugger and print-tracing to isolate a defect.",
-      "Explain your code aloud in a short code-review conversation."
+      "Ship a finished, documented project to a public GitHub repository."
     ],
-    grading: [["Weekly labs (auto-checked)", 30], ["Two projects", 40], ["Concept quizzes", 15], ["Final build + walkthrough", 15]],
-    project: { t: "Command-line expense tracker", d: "Build a terminal program that records expenses to a file, summarizes them by category and month, and flags the three largest. Ships with a passing pytest suite and a short README." },
-    skills: ["Python", "Variables & Types", "Control Flow", "Functions", "Lists & Dictionaries", "pytest", "Debugging", "Command-Line Programs"],
+    grading: [["Module labs (auto-checked)", 35], ["The expense-tracker project", 35], ["Concept checks", 10], ["GitHub repo, README & final walkthrough", 20]],
+    project: { t: "Command-line expense tracker", d: "Build a terminal program that records expenses to a file, summarizes them by category and month, and flags the three largest. Built module by module across the course, hosted on GitHub, and shipped with a passing pytest suite and a real README." },
+    skills: ["Python", "Command Line", "Git", "GitHub", "Variables & Types", "Control Flow", "Functions", "Lists & Dictionaries", "JSON & Files", "pytest", "Debugging", "Command-Line Apps"],
     units: [
       {
-        n: "Getting a program to run", weeks: "Weeks 1–2",
-        sum: "Set up your tools, run your first programs, and get comfortable with the edit–run–read-the-error loop that is most of programming.",
+        n: "Setting Up Your Computer", weeks: "Week 1",
+        sum: "Install Python, open a terminal, and set up the editor you'll use for the rest of this course.",
         lessons: [
-          L("How code becomes behavior", "reading", 18,
-            "What an interpreter is, what a script is, and what actually happens when you press Run.",
-            ["Describe the path from source text to running behavior", "Name the parts of the Python toolchain you will use"],
-            `<p class="lead">Programming is a conversation with a very literal machine. You write text; a program called the <em>interpreter</em> reads that text top to bottom and does exactly what it says — nothing more, nothing less.</p>
-<p>When you run <code>python hello.py</code>, Python opens the file, turns each line into an instruction, and executes them in order. If line 3 refers to something you only define on line 8, Python does not "look ahead" — it fails on line 3. Most early confusion comes from expecting the machine to understand intent. It does not. It understands order and exact spelling.</p>
-<h3>The loop you will live in</h3>
-<ol><li><strong>Edit</strong> — change a small piece of the text.</li><li><strong>Run</strong> — execute it.</li><li><strong>Read</strong> — read the output or the error, all of it, slowly.</li><li>Repeat.</li></ol>
-<p>The single most valuable habit in this course: when something breaks, read the last line of the error message first. It usually names the file, the line number, and what went wrong.</p>
-<pre class="kbd-term"><code>$ python hello.py
-  File "hello.py", line 3
-    print("total: " + total)
-TypeError: can only concatenate str (not "int") to str</code></pre>
-<p>That message is not an insult. It is a precise description of a fixable problem, and by week three you will read it in one glance.</p>`),
+          L("Opening a terminal", "reading", 20,
+            "What a terminal is, and how to open the one already on your computer — Mac, Windows, or Linux.",
+            ["Open a terminal on your own computer", "Run pwd/cd/ls (or dir) to move around your file system", "Create a folder for this course's project"],
+            `<p class="lead">Everything in this course happens in two windows: a code editor, and a terminal. The terminal is where you'll actually run your programs, use Git, and eventually push code to GitHub — so before writing a single line of Python, get comfortable opening it and typing into it.</p>
+<h3>Find yours</h3>
+<table class="grades" style="margin:16px 0">
+<thead><tr><th>Your computer</th><th>What to open</th></tr></thead>
+<tbody>
+<tr><td>Mac</td><td>Press <code>Cmd + Space</code>, type <strong>Terminal</strong>, press Return. (Also in Applications → Utilities.)</td></tr>
+<tr><td>Windows</td><td>Press the <strong>Start</strong> key, type <strong>Terminal</strong> (Windows 11) or <strong>PowerShell</strong> (Windows 10), press Enter.</td></tr>
+<tr><td>Linux</td><td>Whatever your distribution ships — GNOME Terminal, Konsole, xterm — usually in your applications menu as "Terminal."</td></tr>
+</tbody>
+</table>
+<p>Once we install a code editor in Lesson 3, you can also open a terminal from inside it — that one behaves identically on every operating system, the easiest option once it's available. Learn the native one first; you'll need it regardless.</p>
+<h3>A few commands that work almost everywhere</h3>
+<pre class="kbd-term"><code>pwd                  # "print working directory" — where am I right now?
+ls                     # list what's in this folder     (Windows PowerShell: dir, or ls also works)
+cd Desktop             # move INTO a folder named Desktop
+cd ..                  # move UP one level
+mkdir codeu             # make a new folder named codeu</code></pre>
+<p><code>cd</code> ("change directory") is the one you'll type most.</p>
+<h3>Try it now</h3>
+<p>Open your terminal and create the folder that will hold every project in this course:</p>
+<pre class="kbd-term"><code>$ cd Desktop
+$ mkdir codeu
+$ cd codeu
+$ pwd
+/Users/you/Desktop/codeu</code></pre>
+<p>(On Windows your prompt looks like <code>C:\\Users\\you\\Desktop\\codeu&gt;</code> instead of starting with <code>$</code> — that's fine. From here on, this course shows <code>$</code> to mean "type this at your prompt," on any operating system.)</p>`),
+          L("Installing Python", "reading", 26,
+            "Real, per-operating-system install and verify steps — including the one checkbox that trips up most beginners.",
+            ["Install Python 3 on your computer", "Verify the install from your terminal", "Explain what pip is"],
+            `<p class="lead">Python needs to be installed once. After that, every project in this course — and every project after it — reuses the same install.</p>
+<h3>Install it</h3>
+<table class="grades" style="margin:16px 0">
+<thead><tr><th>Your computer</th><th>How</th></tr></thead>
+<tbody>
+<tr><td>Windows</td><td>Go to <strong>python.org/downloads</strong>, download the installer, run it. On the first screen, check <strong>"Add python.exe to PATH"</strong> before clicking Install — skipping this is the single most common setup mistake, and it means your terminal won't find <code>python</code> afterward.</td></tr>
+<tr><td>Mac</td><td>Go to <strong>python.org/downloads</strong>, download the macOS installer, run it, follow the prompts. (macOS ships an old system Python — don't rely on it; install your own.)</td></tr>
+<tr><td>Linux</td><td>Usually already installed. If not: <code>sudo apt install python3</code> (Debian/Ubuntu) or your distribution's equivalent.</td></tr>
+</tbody>
+</table>
+<h3>Verify it</h3>
+<p>Close and reopen your terminal (it needs a fresh start to see the new install), then:</p>
+<pre class="kbd-term"><code># Mac / Linux
+$ python3 --version
+Python 3.12.4
+
+# Windows
+&gt; python --version
+Python 3.12.4</code></pre>
+<p>Mac and Linux keep <code>python</code> reserved for an old Python 2 in some setups, so this course always says <code>python3</code> for those. Windows installs from python.org register as <code>python</code>. If your terminal says <code>command not found</code> or <code>'python' is not recognized</code>, the PATH checkbox above is almost always why — rerun the installer and look for a "modify" or "repair" option, or reinstall with the box checked.</p>
+<h3>What pip is</h3>
+<p><code>pip</code> installs additional Python packages — like <code>pytest</code>, which you'll use from Module 10 onward. It comes bundled with Python:</p>
+<pre class="kbd-term"><code>$ python3 -m pip --version
+pip 24.0 from ...</code></pre>
+<p>Typing <code>python3 -m pip</code> instead of bare <code>pip</code> is a small habit worth keeping — it guarantees you're using the pip that belongs to <em>this</em> Python, even if your computer has more than one Python installed.</p>`),
+          L("Your editor and your first program", "lab", 40,
+            "Install VS Code, open your project folder, and run your first real program from its built-in terminal.",
+            null,
+            `<p class="lead">One more install, then you'll run real code — from the terminal, the way you will for the rest of this course.</p>
+<h3>Install VS Code</h3>
+<p>Download it free from <strong>code.visualstudio.com</strong> for your operating system, run the installer, accept the defaults. VS Code is a code editor with a built-in terminal panel that works identically on Windows, Mac, and Linux — from here on, you can use either it or your native terminal for every command this course shows.</p>
+<h3>Open your project folder</h3>
+<pre class="kbd-term"><code>$ cd ~/Desktop/codeu
+$ code .</code></pre>
+<p><code>code .</code> opens VS Code in the current folder (the dot means "here"). If <code>code</code> isn't recognized, open VS Code normally and use <strong>File → Open Folder</strong> to open the <code>codeu</code> folder from Lesson 1.</p>
+<h3>Open the built-in terminal</h3>
+<p>In VS Code: menu <strong>Terminal → New Terminal</strong> (or <code>Ctrl</code> + the backtick key). A terminal panel opens at the bottom, already sitting in your project folder.</p>
+<h3>Write your first file</h3>
+<p>In VS Code's file explorer (left sidebar), create a new file named <code>hello.py</code> and type exactly this:</p>
+<pre><code>print("Hello, CodeU!")
+print("This is running from my own terminal.")</code></pre>
+<p>Save it (<code>Ctrl+S</code> / <code>Cmd+S</code>). Now run it from the terminal panel — this is the loop you'll repeat thousands of times this course: edit the file, then run it from the terminal.</p>
+<pre class="kbd-term"><code>$ python3 hello.py
+Hello, CodeU!
+This is running from my own terminal.</code></pre>
+<p>(Windows: <code>python hello.py</code>, no <code>3</code>.)</p>
+<div class="note">If you see the text printed back at you, everything is installed correctly — editor, Python, and terminal are all talking to each other. Everything from here builds on exactly this loop.</div>`)
+        ]
+      },
+      {
+        n: "Git, GitHub, and Your First Commit", weeks: "Week 2",
+        sum: "Turn your project into a Git repository and push your first commit to a real GitHub repo.",
+        lessons: [
+          L("What Git and GitHub actually are", "reading", 20,
+            "Version control, in plain language: what a commit is, and why Git and GitHub are two different things.",
+            ["Explain the difference between Git and GitHub", "Explain what a commit is"],
+            `<p class="lead">Two names that get used interchangeably and shouldn't be.</p>
+<h3>Git: a tool on your computer</h3>
+<p><strong>Git</strong> is a program that watches a folder and remembers every version of every file you tell it to, forever. Each saved snapshot is called a <strong>commit</strong>. Unlike hitting "Save" — which overwrites what was there — a commit keeps the old version too, with a message explaining what changed and why. You can jump back to any commit, compare two commits, or see exactly which line changed and when.</p>
+<h3>GitHub: a website that hosts Git repositories</h3>
+<p><strong>GitHub</strong> is a website (owned by Microsoft, unrelated to Python) that stores a copy of your Git history online. Git works with zero internet connection; GitHub is where you back that history up, share it, and — for this course — build the public portfolio a future employer or your own future self can look at. A folder Git is tracking is called a <strong>repository</strong>, or <strong>repo</strong> for short.</p>
+<h3>The habit you're building</h3>
+<p>From this module on, every lab in this course ends the same way: you save your work as a commit, then push it to GitHub. By the end of Module 12 your expense tracker will have a complete, readable history of exactly how it was built — one small, described step at a time. A real project with one giant "final version" commit and a real project with forty small, well-described ones look very different to anyone reviewing your work.</p>`),
+          L("Installing Git and creating your GitHub account", "reading", 24,
+            "Install Git, tell it who you are, and create the GitHub account you'll push to for the rest of this course.",
+            ["Install Git", "Configure your name and email", "Create a GitHub account"],
+            `<p class="lead">Two accounts to set up before your first commit: Git on your machine, and an account on GitHub's website.</p>
+<h3>Install Git</h3>
+<table class="grades" style="margin:16px 0">
+<thead><tr><th>Your computer</th><th>How</th></tr></thead>
+<tbody>
+<tr><td>Mac</td><td>Open a terminal and type <code>git --version</code>. If it's not installed, macOS offers to install Apple's Command Line Tools for you — accept, and wait a few minutes.</td></tr>
+<tr><td>Windows</td><td>Download <strong>Git for Windows</strong> from <strong>git-scm.com</strong>, run the installer, and accept the defaults on every screen unless you have a reason not to.</td></tr>
+<tr><td>Linux</td><td><code>sudo apt install git</code> (Debian/Ubuntu) or your distribution's equivalent.</td></tr>
+</tbody>
+</table>
+<pre class="kbd-term"><code>$ git --version
+git version 2.45.1</code></pre>
+<h3>Tell Git who you are</h3>
+<p>Every commit is stamped with a name and email. Set them once, globally, and every project on this machine uses them:</p>
+<pre class="kbd-term"><code>$ git config --global user.name "Ada Lovelace"
+$ git config --global user.email "ada@example.com"</code></pre>
+<p>Use the same email you'll use for GitHub in the next step — it's how GitHub later connects your commits to your profile.</p>
+<h3>Create your GitHub account</h3>
+<p>Go to <strong>github.com/join</strong>. Pick a username carefully — it becomes part of your project URLs and, realistically, part of your professional portfolio (<code>github.com/your-username</code>). Verify your email when GitHub asks.</p>
+<div class="note">You now have everything installed for the rest of this course: a terminal, an editor, Python, Git, and a GitHub account. Module 3 is where the Python starts.</div>`),
+          L("Lab: init, commit, push", "lab", 45,
+            "Create a GitHub repo, turn your local folder into a Git repository, make your first commit, and push it live.",
+            null,
+            `<p class="lead">Turn your <code>codeu</code> folder into a Git repository, make your first commit, and push it to GitHub — the exact four-step pattern you'll repeat at the end of every module from here on.</p>
+<h3>Step 1 — Create the repository on GitHub</h3>
+<p>On github.com, click the <strong>+</strong> in the top right → <strong>New repository</strong>. Name it <code>expense-tracker</code>. Leave it Public. <strong>Do not</strong> check "Add a README" — you'll create everything from your own computer instead. Click <strong>Create repository</strong> and leave the page open; it shows you the commands from Step 3.</p>
+<h3>Step 2 — Turn your local folder into a repo</h3>
+<pre class="kbd-term"><code>$ cd ~/Desktop/codeu
+$ mkdir expense-tracker
+$ cd expense-tracker
+$ git init
+Initialized empty Git repository in .../expense-tracker/.git/</code></pre>
+<p><code>git init</code> creates a hidden <code>.git</code> folder here — Git's entire database for this project. Everything from now on happens inside this folder.</p>
+<h3>Step 3 — Make something, then commit it</h3>
+<p>Create a file named <code>README.md</code> with one line:</p>
+<pre><code># Expense Tracker
+
+A command-line expense tracker, built module by module in CodeU's Programming I.</code></pre>
+<pre class="kbd-term"><code>$ git status
+On branch main
+Untracked files:
+  README.md
+
+$ git add README.md
+$ git status
+Changes to be committed:
+  new file:   README.md
+
+$ git commit -m "Add project README"
+[main (root-commit) a1b2c3d] Add project README
+ 1 file changed, 3 insertions(+)</code></pre>
+<p><code>git status</code> is your dashboard — run it constantly, it never changes anything, it only reports what Git currently sees. <code>git add</code> stages a file (marks it "include this in the next commit"); <code>git commit</code> actually saves that snapshot, with a message describing what you did, written in the imperative mood ("Add," not "Added").</p>
+<h3>Step 4 — Connect to GitHub and push</h3>
+<p>Back on the GitHub page from Step 1, copy the commands under "…or push an existing repository from the command line" — they'll look like this, with your own username:</p>
+<pre class="kbd-term"><code>$ git remote add origin https://github.com/your-username/expense-tracker.git
+$ git branch -M main
+$ git push -u origin main</code></pre>
+<p>The first time you push, GitHub needs to confirm it's really you. Most setups today pop open a browser window to sign in — follow that. If your terminal instead asks for a username and password directly, type your username, but for the password GitHub no longer accepts your account password there — you need a <strong>Personal Access Token</strong> instead (GitHub → your profile photo → Settings → Developer settings → Personal access tokens → Generate new token), pasted in place of the password.</p>
+<h3>Verify it, then learn the pattern</h3>
+<p>Refresh the GitHub page — your README should be there, rendered as the repo's front page. This is the checkpoint you'll repeat at the end of every module from here on:</p>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "describe what you just did"
+$ git push</code></pre>
+<p><code>git add -A</code> stages every change in the folder, not just one file. After this first push, plain <code>git push</code> is enough; you only needed <code>-u origin main</code> once.</p>`)
+        ]
+      },
+      {
+        n: "Your First Python: Values, Names, and Types", weeks: "Week 3",
+        sum: "Write and run your first real Python — values, types, and the very first line of your expense tracker.",
+        lessons: [
           L("Values, names, and types", "reading", 22,
             "Numbers, strings, and booleans; assigning names to values; why 3 and \"3\" behave differently.",
             ["Assign and reassign variables", "Predict the type of an expression", "Convert between str, int, and float deliberately"],
             `<p class="lead">Every value in Python has a name pointing at it and a type telling Python what it can do. Get comfortable with both and most of the confusing early errors stop being confusing.</p>
 <h3>A name is a label, not a box</h3>
-<p>When you write <code>age = 30</code>, Python does not put 30 "inside" a box called age. It creates the value 30, then makes the name <code>age</code> point at it — like a sticky note, not a container. You can move the sticky note to a different value any time:</p>
+<p>When you write <code>age = 30</code>, Python does not put 30 "inside" a box called age. It creates the value 30, then makes the name <code>age</code> point at it — like a sticky note, not a container.</p>
 <pre><code>age = 30
 age = 31        # the same name, now pointing at a different value
 print(age)        # 31</code></pre>
@@ -857,106 +1014,60 @@ print(age)        # 31</code></pre>
 3.14        float    a number with a decimal point
 "hello"     str      text, in single or double quotes
 True        bool     True or False, capitalized</code></pre>
-<p>Ask Python what type something is with <code>type()</code>:</p>
 <pre class="kbd-term"><code>&gt;&gt;&gt; type(42)
 &lt;class 'int'&gt;
 &gt;&gt;&gt; type("42")
 &lt;class 'str'&gt;</code></pre>
-<p><code>42</code> and <code>"42"</code> look almost identical on the page but are completely different things to Python: one is a number you can do arithmetic on, the other is text that happens to contain digits.</p>
 <h3>Why + does two different things</h3>
 <pre><code>3 + 4          # 7      (numeric addition)
-"3" + "4"      # "34"   (string concatenation — gluing text together)
+"3" + "4"      # "34"   (string concatenation)
 3 + "4"        # TypeError — Python refuses to guess what you meant</code></pre>
-<p>That's the exact error from the last lesson's terminal transcript. Python will not silently convert one type into another for you. You convert on purpose, with <code>int()</code>, <code>float()</code>, or <code>str()</code>:</p>
-<pre><code>text = "4"
-number = int(text)        # 4, now usable in arithmetic
-print(3 + number)          # 7
-
-age = 30
-message = "I am " + str(age) + " years old"</code></pre>
+<p>Python will not silently convert one type into another for you. You convert on purpose, with <code>int()</code>, <code>float()</code>, or <code>str()</code>.</p>
 <h3>input() always gives you a string</h3>
-<p>Whatever a person types at <code>input()</code>, Python hands it back as <code>str</code> — even if they typed digits. This trips up nearly everyone in their first week:</p>
+<p>Whatever a person types at <code>input()</code>, Python hands it back as <code>str</code> — even if they typed digits:</p>
 <pre><code>value = input("Enter a number: ")     # value is a str, e.g. "10"
 doubled = value * 2                     # "1010" — string repetition, not math!
 doubled = int(value) * 2                # 20 — convert first</code></pre>
 <div class="trace" data-trace="cs110-values"></div>
 <h3>Your first self-check</h3>
-<p>Python has a built-in word, <code>assert</code>, that checks a claim and stops the program loudly if the claim is false. You will use this constantly, and it is the seed of the formal testing you'll do in Unit 5:</p>
 <pre><code>assert 3 + 4 == 7, "addition should give 7"
 assert type("42") is str, "quoted digits are still text"
 print("Both checks passed.")</code></pre>
-<p>Run that file and nothing dramatic happens — silence and the final print mean every assertion held. Change the <code>7</code> to an <code>8</code> and run it again: Python stops immediately and shows you exactly which claim failed and why. That is a test.</p>`),
-          L("Lab: your first 20 lines", "lab", 55,
-            "Write, run, and fix a short program that greets a user and does simple arithmetic on their input. Auto-checked.",
+<p>Run that file and nothing dramatic happens — silence plus the final print means every assertion held. Change the <code>7</code> to an <code>8</code> and run it again: Python stops immediately and shows exactly which claim failed. That is a test.</p>`),
+          L("Lab: your app's first line", "lab", 35,
+            "Create the expense-tracker repo's first real file, run it from your terminal, and push your first code commit.",
             null,
-            `<p class="lead">Time to write a program from a blank file. You'll build a tiny greeting-and-arithmetic tool, and — for the first time — see the actual tests it needs to pass.</p>
-<h3>The task</h3>
-<p>Create a file named <code>greet.py</code> that:</p>
-<ol>
-<li>Defines a function <code>add(a, b)</code> that returns the sum of two numbers.</li>
-<li>In a <code>main()</code> function: asks for the user's name and greets them, then asks for two numbers, adds them with <code>add()</code>, and prints the result.</li>
-</ol>
-<p>Notice the shape: the <em>logic</em> (addition) lives in a function that takes input as arguments and returns a value. The <em>interaction</em> (asking, printing) lives separately in <code>main()</code>. This split is what makes the logic testable — a test can call <code>add(2, 3)</code> directly without needing a human to type anything.</p>
-<h3>Starter template</h3>
-<pre><code># greet.py
+            `<p class="lead">Time to add real code to the repo you created last module. This is version 1 of your expense tracker — barely more than "hello world," but it's the seed everything else grows from.</p>
+<h3>Write main.py</h3>
+<p>Inside your <code>expense-tracker</code> folder, create <code>main.py</code>:</p>
+<pre><code>print("=== Expense Tracker ===")
 
-def add(a, b):
-    """Return the sum of a and b."""
-    return a + b
+description = input("Expense description: ")
+amount = float(input("Amount: $"))
 
-
-def main():
-    name = input("What is your name? ")
-    print(f"Hello, {name}! Let's do some quick math.")
-
-    first = float(input("Enter a number: "))
-    second = float(input("Enter another number: "))
-    print(f"{first} + {second} = {add(first, second)}")
-
-
-if __name__ == "__main__":
-    main()</code></pre>
-<p>That last line is an idiom you'll see in every Python file from here on. <code>__name__</code> is <code>"__main__"</code> only when you run the file directly — not when something else imports it. It means: "run main() only if this file is the one being executed." That's what lets the auto-grader import <code>add</code> from your file to test it, without your greeting and input prompts running and blocking the grader.</p>
-<h3>What the auto-grader actually checks</h3>
-<p>This isn't hidden from you — here is the real test file, word for word:</p>
-<div class="testfile">
-  <div class="tf-name">test_greet.py</div>
-  <pre><code>from greet import add
-
-def test_add_positive_numbers():
-    assert add(2, 3) == 5
-
-def test_add_negative_numbers():
-    assert add(-2, -3) == -5
-
-def test_add_zero():
-    assert add(0, 7) == 7
-
-def test_add_floats():
-    assert add(1.5, 2.5) == 4.0</code></pre>
-</div>
-<p>Notice what it does <em>not</em> do: it never calls <code>main()</code> and never simulates typing. It only imports and calls <code>add</code>, because <code>add</code> is the part with a clear input and a clear output. Run it yourself once you have Python installed:</p>
-<pre class="kbd-term"><code>$ pytest test_greet.py -v
-test_greet.py::test_add_positive_numbers PASSED
-test_greet.py::test_add_negative_numbers PASSED
-test_greet.py::test_add_zero PASSED
-test_greet.py::test_add_floats PASSED
-
-4 passed in 0.01s</code></pre>
-<details class="reveal">
-  <summary>See one possible finished solution</summary>
-  <div class="reveal-body">
-    <p>The starter template above already passes every test as written — that's intentional for this first lab. Your job is to actually type it in yourself, run it, and watch pytest pass, rather than change any logic. From the next lab onward, you'll be given a task the starter code doesn't yet solve.</p>
-  </div>
-</details>`)
+print(f"You spent \${amount:.2f} on {description}.")</code></pre>
+<h3>Run it</h3>
+<pre class="kbd-term"><code>$ python3 main.py
+=== Expense Tracker ===
+Expense description: Coffee
+Amount: $4.50
+You spent $4.50 on Coffee.</code></pre>
+<p>Try it with a few different descriptions and amounts. Notice <code>amount</code> is converted with <code>float()</code> immediately — the input-always-gives-a-string lesson from the reading, applied for real.</p>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Add main.py: read one expense and print it back"
+$ git push</code></pre>
+<p>Check GitHub — <code>main.py</code> should now be there next to your README. Every module from here adds one deliberate capability to this same file.</p>`)
         ]
       },
       {
-        n: "Decisions and repetition", weeks: "Weeks 3–4",
-        sum: "Make programs that respond differently to different input, and that repeat work without you repeating yourself.",
+        n: "Making Decisions: Conditionals", weeks: "Week 4",
+        sum: "Make decisions in code, and handle input that doesn't cooperate.",
         lessons: [
-          L("Conditionals and boolean logic", "reading", 24, "if / elif / else, comparison operators, and combining conditions with and / or / not.", ["Write branching logic for a multi-case problem", "Avoid the classic = vs == error"],
-            `<p class="lead">A program that always does the same thing regardless of input isn't very useful. Conditionals let your code make decisions.</p>
+          L("Conditionals, and what to do when input is wrong", "reading", 26,
+            "if / elif / else, comparison operators, and a first look at try/except for input that can't be converted.",
+            ["Write branching logic for a multi-case problem", "Avoid the classic = vs == error", "Use try/except to handle a conversion that can fail"],
+            `<p class="lead">A program that always does the same thing regardless of input isn't very useful. Conditionals let your code make decisions — including the decision "this input isn't even usable."</p>
 <h3>if, elif, else</h3>
 <pre><code>temperature = 15
 
@@ -966,56 +1077,92 @@ elif temperature &gt; 10:
     print("It's mild.")
 else:
     print("It's cold.")</code></pre>
-<p>Python checks each condition top to bottom and runs the <strong>first</strong> block that matches — then skips the rest, even if a later condition would also be true. Order matters: swap the two conditions above and a temperature of 30 would incorrectly print "It's mild," because 30 &gt; 10 is also true and gets checked first.</p>
-<h3>Comparison operators</h3>
-<pre><code>==   equal to           !=   not equal to
-&gt;    greater than       &lt;    less than
-&gt;=   greater or equal   &lt;=   less or equal</code></pre>
-<div class="note" style="border-left-color:var(--danger)"><strong>The single most common beginner bug:</strong> <code>=</code> assigns a value. <code>==</code> compares two values. <code>if x = 5:</code> is not even valid Python — the interpreter refuses to run it and tells you so. If you ever see that error, you meant <code>==</code>.</div>
-<h3>Combining conditions</h3>
-<pre><code>age = 20
-has_ticket = True
-
-if age &gt;= 18 and has_ticket:
-    print("Welcome in.")
-
-if age &lt; 18 or not has_ticket:
-    print("Sorry, you can't enter.")</code></pre>
-<p><code>and</code> requires both sides to be true. <code>or</code> requires at least one. <code>not</code> flips a boolean. Python also short-circuits: in <code>a and b</code>, if <code>a</code> is false, Python never even evaluates <code>b</code> — useful for <code>if count &gt; 0 and total / count &gt; 5:</code>, which would crash on division by zero if the order were reversed.</p>
-<h3>Truthy and falsy, briefly</h3>
-<p>Any value can be used where Python expects a boolean. <code>0</code>, <code>""</code> (empty string), <code>[]</code> (empty list), and <code>None</code> all count as false; almost everything else counts as true:</p>
-<pre><code>name = ""
-if name:
-    print(f"Hello, {name}")
-else:
-    print("You didn't type a name.")</code></pre>
+<p>Python checks each condition top to bottom and runs the <strong>first</strong> block that matches, then skips the rest. Order matters: swap the two conditions above and 30° would incorrectly print "It's mild," because 30 &gt; 10 is also true and gets checked first.</p>
+<h3>Comparison and boolean operators</h3>
+<pre><code>==   equal to      !=   not equal to     &gt;   greater than    &lt;   less than
+&gt;=   greater or equal                &lt;=   less or equal
+and  both must be true     or  at least one true     not  flips a boolean</code></pre>
+<div class="note" style="border-left-color:var(--danger)"><strong>The single most common beginner bug:</strong> <code>=</code> assigns a value. <code>==</code> compares two values. If you see <code>SyntaxError</code> on a line like <code>if x = 5:</code>, you meant <code>==</code>.</div>
 <h3>Try it: classify a score</h3>
 <pre><code>score = 82
-
 if score &gt;= 90:
     grade = "A"
 elif score &gt;= 80:
     grade = "B"
-elif score &gt;= 70:
-    grade = "C"
 else:
-    grade = "F"
-
+    grade = "C or below"
 assert grade == "B", f"expected B, got {grade}"
 print(f"Score {score} -&gt; grade {grade}")</code></pre>
-<p>Change <code>score</code> to 95, 72, and 40 and predict the grade before you run it each time. That prediction habit — decide what should happen, then check — is the single best way to learn control flow.</p>`),
-          L("Loops: while and for", "reading", 26, "Iterating over a range, over a list, and until a condition changes. Off-by-one errors and how to not have them.", ["Choose between for and while", "Trace a loop by hand on paper"],
+<h3>When the input itself is the problem</h3>
+<p>Your expense tracker asks <code>float(input("Amount: $"))</code> to convert whatever someone types. Type a number and it works. Type <code>"free"</code> and Python can't make a float out of that — it raises a <code>ValueError</code> and crashes:</p>
+<pre class="kbd-term"><code>$ python3 main.py
+Amount: $free
+Traceback (most recent call last):
+  ...
+ValueError: could not convert string to float: 'free'</code></pre>
+<p><code>try</code>/<code>except</code> is Python's way to say "attempt this, and if it fails in this specific way, do something else instead of crashing":</p>
+<pre><code>try:
+    amount = float(amount_text)
+    if amount &gt; 0:
+        print(f"You spent \${amount:.2f} on {description}.")
+    else:
+        print("Amount must be positive.")
+except ValueError:
+    print("That doesn't look like a number.")</code></pre>
+<p>This is still a decision — "did the conversion succeed, or not" — Python just needs a different keyword for it, because the failure happens partway through a line, not at a plain <code>if</code>.</p>`),
+          L("Lab: validate the amount", "lab", 35,
+            "Make your tracker reject bad input instead of crashing on it.",
+            null,
+            `<p class="lead">Make your expense tracker refuse bad input instead of crashing on it.</p>
+<h3>Update main.py</h3>
+<pre><code>print("=== Expense Tracker ===")
+
+description = input("Expense description: ")
+amount_text = input("Amount: $")
+
+try:
+    amount = float(amount_text)
+    if amount &gt; 0:
+        print(f"You spent \${amount:.2f} on {description}.")
+    else:
+        print("Amount must be positive.")
+except ValueError:
+    print("That doesn't look like a number.")</code></pre>
+<h3>Try it three ways</h3>
+<pre class="kbd-term"><code>$ python3 main.py
+Expense description: Coffee
+Amount: $4.50
+You spent $4.50 on Coffee.
+
+$ python3 main.py
+Expense description: Coffee
+Amount: $free
+That doesn't look like a number.
+
+$ python3 main.py
+Expense description: Coffee
+Amount: $-4.50
+Amount must be positive.</code></pre>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Validate amount: reject non-numeric and non-positive input"
+$ git push</code></pre>`)
+        ]
+      },
+      {
+        n: "Repeating Work: Loops", weeks: "Week 5",
+        sum: "Repeat work with loops — and let your tracker log more than one expense per run.",
+        lessons: [
+          L("Loops: while and for", "reading", 26,
+            "Iterating with for and while, break and continue, and the accumulator pattern.",
+            ["Choose between for and while", "Use break and continue correctly", "Trace an accumulator loop by hand"],
             `<p class="lead">Loops repeat work so you don't have to write the same line ten times. Python gives you two: <code>for</code>, when you know what you're iterating over, and <code>while</code>, when you're repeating until a condition changes.</p>
 <h3>for: iterate over something</h3>
 <pre><code>for n in range(1, 6):
     print(n)          # 1 2 3 4 5</code></pre>
-<p><code>range(1, 6)</code> produces 1, 2, 3, 4, 5 — it stops <em>before</em> 6. This "stop before the end" convention is everywhere in Python (it's also how list slicing works) and is the source of most off-by-one bugs. Five numbers starting at 1 means the stop value is 1 + 5 = 6, not 5.</p>
-<pre><code>fruits = ["apple", "banana", "cherry"]
-for fruit in fruits:
-    print(fruit)</code></pre>
-<p>You can loop directly over a list's items — you rarely need index numbers in Python, unlike some other languages.</p>
+<p><code>range(1, 6)</code> stops <em>before</em> 6 — the same "stop before the end" rule you'll see again in slicing. Five numbers starting at 1 means the stop value is 6, not 5.</p>
 <h3>The accumulator pattern</h3>
-<p>The single most useful loop shape: start with an empty or zero "accumulator," then update it once per iteration.</p>
+<p>Start with an empty or zero "accumulator," then update it once per iteration — the single most useful loop shape in this course.</p>
 <div class="trace" data-trace="cs110-loop-sum"></div>
 <h3>while: repeat until something changes</h3>
 <pre><code>count = 0
@@ -1023,110 +1170,135 @@ while count &lt; 3:
     print("Counting:", count)
     count = count + 1
 print("Done.")</code></pre>
-<p>Unlike <code>for</code>, nothing about <code>while</code> guarantees it ever stops. Forget <code>count = count + 1</code> and this loops forever — an <strong>infinite loop</strong>. If your program hangs and shows no output, that's almost always the cause; stop it with Ctrl+C and look for the line that's supposed to change the condition.</p>
+<p>Nothing about <code>while</code> guarantees it ever stops. Forget <code>count = count + 1</code> and this loops forever — an <strong>infinite loop</strong>. A hung program with no output is almost always this; stop it with Ctrl+C.</p>
 <h3>break and continue</h3>
 <pre><code>for n in range(1, 10):
     if n == 5:
         break            # exit the loop immediately
-    print(n)               # prints 1 2 3 4
+    print(n)
 
 for n in range(1, 6):
     if n % 2 == 0:
-        continue         # skip the rest of this iteration
-    print(n)               # prints 1 3 5</code></pre>
-<h3>Try it: guess the output</h3>
-<pre><code>total = 0
-for n in [3, 1, 4, 1, 5]:
-    if n &gt; 2:
-        total = total + n
-print(total)</code></pre>
-<p>Predict the number, then run it. (It's 12: 3, 4, and 5 are each greater than 2; 3 + 4 + 5 = 12. The two 1s are skipped.)</p>`),
-          L("Lab: FizzBuzz and friends", "lab", 50, "Three classic small problems that force clean use of conditionals and loops. Auto-checked with hidden cases.", null,
-            `<p class="lead">Three small, self-contained functions. None are hard on their own — the point is writing clean loop-and-condition code and proving it with tests before you trust it.</p>
-<h3>The task</h3>
-<p>Create <code>fizzbuzz.py</code> with three functions:</p>
-<ol>
-<li><code>fizzbuzz(n)</code> — return a list of strings for 1 through n. Multiples of 3 become "Fizz", multiples of 5 become "Buzz", multiples of both become "FizzBuzz", everything else becomes its own number as a string.</li>
-<li><code>is_palindrome(s)</code> — return True if s reads the same forwards and backwards, ignoring case.</li>
-<li><code>count_vowels(s)</code> — return how many of a, e, i, o, u appear in s, ignoring case.</li>
-</ol>
-<h3>A hint on structure</h3>
-<p>Check the <em>most specific</em> condition first. Check "multiple of 3" before "multiple of 15" and you'll print "Fizz" for 15, never reaching the FizzBuzz case:</p>
-<pre><code>def fizzbuzz(n):
-    result = []
-    for i in range(1, n + 1):
-        if i % 15 == 0:
-            result.append("FizzBuzz")
-        elif i % 3 == 0:
-            result.append("Fizz")
-        elif i % 5 == 0:
-            result.append("Buzz")
-        else:
-            result.append(str(i))
-    return result</code></pre>
-<p>For a palindrome, Python can reverse a string with slicing: <code>s[::-1]</code> means "the whole string, stepping backward by 1." Lowercase both sides first so "Racecar" still counts.</p>
-<h3>The tests</h3>
-<div class="testfile">
-  <div class="tf-name">test_fizzbuzz.py</div>
-  <pre><code>from fizzbuzz import fizzbuzz, is_palindrome, count_vowels
+        continue         # skip the rest of THIS iteration
+    print(n)</code></pre>
+<p>Your expense tracker is about to use exactly this pair: <code>break</code> when the user is done entering expenses, <code>continue</code> to re-prompt after bad input instead of crashing or quitting.</p>`),
+          L("Lab: log more than one expense", "lab", 40,
+            "Rebuild main.py around a loop so it can log any number of expenses in one run.",
+            null,
+            `<p class="lead">Right now your tracker handles exactly one expense per run. Make it handle as many as you want, in one sitting, using the loop and validation you now have.</p>
+<h3>Rewrite main.py</h3>
+<pre><code>print("=== Expense Tracker ===")
+expenses = []
 
-def test_fizzbuzz_basic():
-    assert fizzbuzz(15) == [
-        "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz",
-        "11", "Fizz", "13", "14", "FizzBuzz",
-    ]
+while True:
+    description = input("\\nExpense description (or 'done' to finish): ")
+    if description.lower() == "done":
+        break
 
-def test_fizzbuzz_length():
-    assert len(fizzbuzz(20)) == 20
+    amount_text = input("Amount: $")
+    try:
+        amount = float(amount_text)
+    except ValueError:
+        print("That doesn't look like a number — try again.")
+        continue
+    if amount &lt;= 0:
+        print("Amount must be positive — try again.")
+        continue
 
-def test_palindrome_true():
-    assert is_palindrome("Racecar") is True
+    expenses.append((description, amount))
 
-def test_palindrome_false():
-    assert is_palindrome("Python") is False
+print(f"\\nYou logged {len(expenses)} expense(s).")
+for description, amount in expenses:
+    print(f"  \${amount:.2f} — {description}")</code></pre>
+<p><code>while True</code> loops forever on purpose — the only way out is the <code>break</code> when someone types "done." <code>continue</code> sends control straight back to the top of the loop, skipping the <code>append</code>, so bad input never gets recorded. <code>expenses</code> is your accumulator, but instead of a running number it's a growing list — each entry a <strong>tuple</strong> <code>(description, amount)</code>, a small fixed bundle of two values.</p>
+<h3>Try it</h3>
+<pre class="kbd-term"><code>$ python3 main.py
+=== Expense Tracker ===
 
-def test_count_vowels():
-    assert count_vowels("Hello World") == 3</code></pre>
-</div>
-<p>Write your own <code>fizzbuzz.py</code> first, without peeking at the hint's full function if you can help it. Run the tests. If <code>test_fizzbuzz_basic</code> fails, print your actual result and compare it to the expected list index by index — that habit saves far more time than staring at the code.</p>
-<details class="reveal">
-  <summary>See one possible solution</summary>
-  <div class="reveal-body">
-    <pre><code>def fizzbuzz(n):
-    result = []
-    for i in range(1, n + 1):
-        if i % 15 == 0:
-            result.append("FizzBuzz")
-        elif i % 3 == 0:
-            result.append("Fizz")
-        elif i % 5 == 0:
-            result.append("Buzz")
-        else:
-            result.append(str(i))
-    return result
+Expense description: Coffee
+Amount: $4.50
 
+Expense description: Groceries
+Amount: $62.10
 
-def is_palindrome(s):
-    cleaned = s.lower()
-    return cleaned == cleaned[::-1]
+Expense description: done
 
-
-def count_vowels(s):
-    count = 0
-    for ch in s.lower():
-        if ch in "aeiou":
-            count += 1
-    return count</code></pre>
-  </div>
-</details>`)
+You logged 2 expense(s).
+  $4.50 — Coffee
+  $62.10 — Groceries</code></pre>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Loop: log any number of expenses in one run"
+$ git push</code></pre>`)
         ]
       },
       {
-        n: "Functions", weeks: "Weeks 5–6",
-        sum: "Package a piece of behavior behind a name so you can use it, test it, and trust it.",
+        n: "Organizing Data: Lists", weeks: "Week 6",
+        sum: "Store and total a growing list of expenses.",
         lessons: [
-          L("Defining and calling functions", "reading", 22, "Parameters, return values, and the difference between printing and returning.", ["Write a function with a docstring and a clear return", "Explain why return beats print for reusable code"],
-            `<p class="lead">A function packages behavior behind a name: define it once, call it as many times as you want, each time with different inputs.</p>
+          L("Lists and iteration patterns", "reading", 24,
+            "Indexing, slicing, appending, and summing what's already in a list.",
+            ["Build and transform a list without index bugs", "Explain what sum() with a generator expression does"],
+            `<p class="lead">A list is an ordered, changeable sequence of values — you're already building one every time you run your tracker.</p>
+<h3>Indexing and slicing</h3>
+<pre><code>fruits = ["apple", "banana", "cherry", "date"]
+fruits[0]         # "apple"
+fruits[-1]         # "date"   — negative indices count from the end
+fruits[1:3]        # ["banana", "cherry"] — stop before index 3</code></pre>
+<h3>Changing a list</h3>
+<pre><code>fruits.append("elderberry")      # add to the end — this is what expenses.append(...) does
+fruits.remove("banana")           # remove the first matching value
+len(fruits)                          # how many items</code></pre>
+<h3>Build-a-list-in-a-loop</h3>
+<p>The pattern your tracker already uses: start empty, <code>append</code> once per iteration.</p>
+<div class="trace" data-trace="cs110-list-build"></div>
+<h3>Summing what's in a list</h3>
+<pre><code>amounts = [4.50, 62.10, 12.00]
+total = sum(amounts)              # 78.6 — no loop needed
+
+# the same thing, by hand with the accumulator pattern:
+total = 0
+for amount in amounts:
+    total = total + amount</code></pre>
+<p><code>sum(amount for description, amount in expenses)</code> is a <strong>generator expression</strong> inside <code>sum()</code>: "for each (description, amount) pair, give sum() just the amount." You'll use exactly this to total your expenses next.</p>
+<h3>A pattern to watch for</h3>
+<p>Modifying a list while looping over it is a classic bug source — build a <em>separate</em> filtered list instead:</p>
+<pre><code># risky
+for e in expenses:
+    if e[1] &lt; 0:
+        expenses.remove(e)     # can silently skip items
+
+# safer
+valid = [e for e in expenses if e[1] &gt;= 0]</code></pre>`),
+          L("Lab: add a running total", "lab", 30,
+            "Add a total to your tracker's summary — the first piece of the finished project's promised summaries.",
+            null,
+            `<p class="lead">Add a running total to your tracker's summary — the first small step toward the "summarize by category and month" the finished project promises.</p>
+<h3>Update the summary</h3>
+<p>In <code>main.py</code>, replace the final print block:</p>
+<pre><code>total = sum(amount for description, amount in expenses)
+print(f"\\nYou logged {len(expenses)} expense(s), totaling \${total:.2f}:")
+for description, amount in expenses:
+    print(f"  \${amount:.2f} — {description}")</code></pre>
+<h3>Try it</h3>
+<pre class="kbd-term"><code>...
+You logged 2 expense(s), totaling $66.60:
+  $4.50 — Coffee
+  $62.10 — Groceries</code></pre>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Show a running total in the summary"
+$ git push</code></pre>`)
+        ]
+      },
+      {
+        n: "Functions: Real Structure", weeks: "Week 7",
+        sum: "Refactor into functions — the shape every later module builds on.",
+        lessons: [
+          L("Defining and calling functions", "reading", 22,
+            "Parameters, return values, and the difference between printing and returning.",
+            ["Write a function with a docstring and a clear return", "Explain why return beats print for reusable code"],
+            `<p class="lead">A function packages behavior behind a name: define it once, call it as many times as you want. Time to break main.py's one long block into pieces you can name, reuse, and — starting in Module 10 — test.</p>
 <h3>Anatomy of a function</h3>
 <pre><code>def greet(name):
     """Return a greeting for name."""
@@ -1134,36 +1306,28 @@ def count_vowels(s):
 
 message = greet("Ada")
 print(message)          # Hello, Ada!</code></pre>
-<p><code>name</code> is a <strong>parameter</strong> — a placeholder filled in with whatever <strong>argument</strong> you pass at call time. The string right after the <code>def</code> line is a <strong>docstring</strong>: a description of what the function does, readable by humans and by tools.</p>
 <h3>return is not print</h3>
-<p>This is the single most important distinction in this unit. <code>print()</code> displays something and hands back nothing usable. <code>return</code> hands a value back to whatever called the function, so it can be stored, tested, or used in more computation.</p>
+<p><code>print()</code> displays something and hands back nothing usable. <code>return</code> hands a value back to whatever called the function, so it can be stored, tested, or passed on:</p>
 <pre><code>def add_v1(a, b):
-    print(a + b)            # displays the answer, returns None
+    print(a + b)            # displays it, returns None
 
 def add_v2(a, b):
-    return a + b              # hands the answer back
+    return a + b              # hands it back
 
 x = add_v1(2, 3)       # prints "5"; x is None
 y = add_v2(2, 3)       # prints nothing; y is 5</code></pre>
-<p>If a function's whole job is to compute something, it should <code>return</code> it — not print it — so the <em>caller</em> decides what to do with the result: print it, test it, save it, or pass it to another function. Every function you've tested so far in this course used <code>return</code> for exactly this reason.</p>
 <div class="trace" data-trace="cs110-func-call"></div>
-<h3>Default arguments</h3>
-<pre><code>def greet(name, greeting="Hello"):
-    return f"{greeting}, {name}!"
+<h3>Try it</h3>
+<pre><code>def is_valid_amount(amount):
+    return amount &gt; 0
 
-greet("Ada")                    # "Hello, Ada!"
-greet("Ada", "Hi")               # "Hi, Ada!"
-greet("Ada", greeting="Yo")    # "Yo, Ada!"</code></pre>
-<p>A parameter with <code>= value</code> becomes optional — callers can leave it out and get the default, or supply it by name for clarity.</p>
-<h3>Try it: write one from scratch</h3>
-<pre><code>def is_even(n):
-    return n % 2 == 0
-
-assert is_even(4) is True
-assert is_even(7) is False
+assert is_valid_amount(4.5) is True
+assert is_valid_amount(-1) is False
 print("Both checks passed.")</code></pre>`),
-          L("Scope and the call stack", "reading", 20, "Local vs. global names, what a stack frame is, and how to read a traceback across several calls.", ["Read a multi-frame traceback", "Predict which variables are visible where"],
-            `<p class="lead">Every function call gets its own private workspace. Understanding that workspace — and what happens when calls stack up — turns a scary traceback into a readable map.</p>
+          L("Scope and the call stack", "reading", 20,
+            "Local vs. global names, what a stack frame is, and how to read a traceback across several calls.",
+            ["Read a multi-frame traceback", "Predict which variables are visible where"],
+            `<p class="lead">Every function call gets its own private workspace. Understanding that — and what happens when calls stack up — turns a scary traceback into a readable map.</p>
 <h3>Local vs. global</h3>
 <pre><code>x = "global"
 
@@ -1172,348 +1336,310 @@ def show():
     print(x)          # local
 
 show()
-print(x)                # global — the function's x never touched this one</code></pre>
-<p>A name assigned inside a function is <strong>local</strong> to that call by default — it exists only while the function runs, and cannot see or change a same-named variable outside it. This is deliberate: it means you can freely name a variable inside a function without worrying about a name used elsewhere in the program.</p>
+print(x)                # global — untouched</code></pre>
+<p>A name assigned inside a function is <strong>local</strong> to that call by default. It exists only while the function runs and can't see or change a same-named variable outside it.</p>
 <h3>The call stack</h3>
-<p>Every time a function calls another function, Python pushes a new <strong>frame</strong> onto the <strong>call stack</strong> — a record of where to return to, and what that call's local variables are. When a function returns, its frame is popped and its local variables disappear.</p>
+<p>Every function call pushes a new <strong>frame</strong> onto the <strong>call stack</strong>. When it returns, the frame is popped and its local variables disappear.</p>
 <div class="trace" data-trace="cs110-call-stack"></div>
 <h3>Reading a traceback</h3>
-<p>When something breaks several calls deep, Python prints the whole stack, oldest call first, most recent — where the error actually happened — last:</p>
+<p>When something breaks several calls deep, Python prints the whole stack, oldest call first. Read it from the <strong>bottom up</strong> — the last line is where it actually failed:</p>
 <pre class="kbd-term"><code>Traceback (most recent call last):
-  File "app.py", line 9, in &lt;module&gt;
-    print(quadruple(3))
-  File "app.py", line 5, in quadruple
-    doubled_twice = double(doubled_once)
-  File "app.py", line 2, in double
-    return n * 2
-TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'</code></pre>
-<p>Read it from the <strong>bottom up</strong>: the actual failure happened on line 2, inside <code>double</code>, called from line 5 inside <code>quadruple</code>, called from line 9 in the main file. Three frames, exactly like the trace above — except this time something broke, and the traceback is Python showing you the whole stack that led there.</p>
-<h3>Try it: predict the scope</h3>
-<pre><code>def outer():
-    value = 10
-    def inner():
-        return value * 2   # inner can READ outer's variables...
-    return inner()
-
-print(outer())          # 20
-
-def broken():
-    return value * 2      # ...but this value doesn't exist here at all
-
-# broken() would raise NameError: name 'value' is not defined</code></pre>
-<p>A nested function can read variables from the function that contains it, but a variable defined inside a function is invisible everywhere outside that function's own frame (and its nested functions).</p>`),
-          L("Quiz: tracing functions", "quiz", 15, "Six short 'what does this print' items covering arguments, returns, and scope.", null,
-            `<p class="lead">No grade is recorded here — this is a self-check. Predict each output on paper before you reveal the answer. Whatever you get wrong is exactly the concept to go re-read.</p>
-<h3>1</h3>
-<pre><code>def f(x):
-    return x + 1
-
-print(f(4))</code></pre>
-<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>5</code>. f(4) computes 4 + 1 and returns it; print shows it.</p></div></details>
-<h3>2</h3>
-<pre><code>def f(x):
-    x = x + 1
-    return x
-
-n = 4
-f(n)
-print(n)</code></pre>
-<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>4</code>. f receives its own local copy bound to the local name x. Reassigning x inside f never touches n outside it — and the returned value is never used here, since f(n) isn't assigned to anything.</p></div></details>
-<h3>3</h3>
-<pre><code>def add_one(n):
-    n += 1
-
-value = 10
-add_one(value)
-print(value)</code></pre>
-<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>10</code>. add_one never returns anything and never modifies the caller's value — same reasoning as question 2. A very common bug: writing a function that changes a local variable and expecting the caller to see the change.</p></div></details>
-<h3>4</h3>
-<pre><code>def mystery(a, b=5):
-    return a * b
-
-print(mystery(3))
-print(mystery(3, 2))</code></pre>
-<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>15</code> then <code>6</code>. The first call uses the default b=5 (3*5=15); the second overrides it (3*2=6).</p></div></details>
-<h3>5</h3>
-<pre><code>def a():
-    return b()
-
-def b():
-    return 42
-
-print(a())</code></pre>
-<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p><code>42</code>. a() calls b(), which returns 42; a() returns that same value straight through. Three frames briefly exist: main, a, and b.</p></div></details>
-<h3>6</h3>
-<pre><code>count = 0
-
-def increment():
-    count = count + 1
-    return count
-
-print(increment())</code></pre>
-<details class="reveal"><summary>Reveal answer</summary><div class="reveal-body"><p>This raises <code>UnboundLocalError</code>, not a number. Because count is assigned inside increment, Python treats it as local for the WHOLE function — including on the right side of count + 1, before it has a local value. (The fix needs the <code>global</code> keyword, which this course deliberately avoids — mutating global state from inside a function is a habit worth avoiding, not learning.)</p></div></details>`),
-          L("Lab: refactor into functions", "lab", 60, "Take a 40-line script and break it into four tested functions without changing its behavior.", null,
-            `<p class="lead">Working code that's hard to read is still a liability. Take a script that does its job in one long tangle and reshape it into small, named, tested pieces — without changing what it does.</p>
-<h3>The starting point</h3>
-<p>This script works. Run it and it prints correct statistics. But every piece of logic is tangled together, nothing is reusable, and nothing is testable without capturing printed output.</p>
-<pre><code># stats_report.py  (before)
-
-numbers = [4, 8, 15, 16, 23, 42]
-total = 0
-for n in numbers:
-    total = total + n
-average = total / len(numbers)
-smallest = numbers[0]
-for n in numbers:
-    if n &lt; smallest:
-        smallest = n
-largest = numbers[0]
-for n in numbers:
-    if n &gt; largest:
-        largest = n
-print("Numbers:", numbers)
-print("Average:", average)
-print("Smallest:", smallest)
-print("Largest:", largest)</code></pre>
-<h3>The task</h3>
-<p>Refactor this into two functions, then a thin <code>main()</code>:</p>
-<ul>
-<li><code>compute_stats(numbers)</code> — return a dict with keys <code>sum</code>, <code>average</code>, <code>min</code>, <code>max</code>.</li>
-<li><code>format_report(numbers, stats)</code> — return a multi-line report string (not printed — <em>returned</em>, so it's testable).</li>
-</ul>
-<p>Python's built-ins <code>sum()</code>, <code>min()</code>, and <code>max()</code> already do the work of those three hand-written loops. Part of getting better at Python is learning what's already in the standard library so you stop reinventing it:</p>
-<pre><code>sum([4, 8, 15, 16, 23, 42])   # 108 — no loop needed
-min([4, 8, 15, 16, 23, 42])   # 4
-max([4, 8, 15, 16, 23, 42])   # 42</code></pre>
-<h3>The tests</h3>
-<div class="testfile">
-  <div class="tf-name">test_stats_report.py</div>
-  <pre><code>from stats_report import compute_stats, format_report
-
-def test_compute_stats_basic():
-    stats = compute_stats([4, 8, 15, 16, 23, 42])
-    assert stats["sum"] == 108
-    assert stats["min"] == 4
-    assert stats["max"] == 42
-    assert round(stats["average"], 2) == 18.0
-
-def test_compute_stats_single_value():
-    stats = compute_stats([10])
-    assert stats == {"sum": 10, "average": 10.0, "min": 10, "max": 10}
-
-def test_format_report_contains_values():
-    stats = compute_stats([1, 2, 3])
-    report = format_report([1, 2, 3], stats)
-    assert "Average: 2.00" in report
-    assert "Smallest: 1" in report
-    assert "Largest: 3" in report</code></pre>
-</div>
-<p>Note the second test: a single-item list means min, max, and average are all that one number. Edge cases like this — the smallest input that's still valid — are exactly where refactored, hand-loop code tends to break, so they belong in your test file even though they feel almost too simple to bother writing.</p>
-<details class="reveal">
-  <summary>See one possible solution</summary>
-  <div class="reveal-body">
-    <pre><code># stats_report.py  (after)
-
-def compute_stats(numbers):
-    """Return a dict with the sum, average, min, and max of numbers."""
-    total = sum(numbers)
-    return {
-        "sum": total,
-        "average": total / len(numbers),
-        "min": min(numbers),
-        "max": max(numbers),
-    }
+  File "main.py", line 20, in &lt;module&gt;
+    main()
+  File "main.py", line 15, in main
+    add_expense(expenses, description, amount)
+  File "main.py", line 3, in add_expense
+    expenses.append((description, amount))
+AttributeError: 'NoneType' object has no attribute 'append'</code></pre>
+<p>You'll see this exact shape of error in Module 11 — and know immediately that <code>expenses</code> is <code>None</code> where it shouldn't be.</p>`),
+          L("Lab: refactor into functions", "lab", 45,
+            "Reshape main.py into add_expense, print_expenses, and main — without changing what it does.",
+            null,
+            `<p class="lead">Reshape main.py into named, reusable functions — without changing what it does.</p>
+<h3>Refactor</h3>
+<pre><code>def add_expense(expenses, description, amount):
+    expenses.append((description, amount))
+    return expenses
 
 
-def format_report(numbers, stats):
-    """Return a human-readable report string."""
-    lines = [
-        f"Numbers: {numbers}",
-        f"Average: {stats['average']:.2f}",
-        f"Smallest: {stats['min']}",
-        f"Largest: {stats['max']}",
-    ]
-    return "\\n".join(lines)
+def print_expenses(expenses):
+    total = sum(amount for description, amount in expenses)
+    print(f"\\nYou logged {len(expenses)} expense(s), totaling \${total:.2f}:")
+    for description, amount in expenses:
+        print(f"  \${amount:.2f} — {description}")
 
 
 def main():
-    numbers = [4, 8, 15, 16, 23, 42]
-    stats = compute_stats(numbers)
-    print(format_report(numbers, stats))
+    print("=== Expense Tracker ===")
+    expenses = []
+    while True:
+        description = input("\\nExpense description (or 'done' to finish): ")
+        if description.lower() == "done":
+            break
+
+        amount_text = input("Amount: $")
+        try:
+            amount = float(amount_text)
+        except ValueError:
+            print("That doesn't look like a number — try again.")
+            continue
+        if amount &lt;= 0:
+            print("Amount must be positive — try again.")
+            continue
+
+        add_expense(expenses, description, amount)
+
+    print_expenses(expenses)
 
 
 if __name__ == "__main__":
     main()</code></pre>
-  </div>
-</details>`)
+<p>Notice <code>if __name__ == "__main__":</code> at the bottom — the idiom that means "run main() only when this file is executed directly." It matters starting Module 10, when a test file <code>import</code>s <code>add_expense</code> from <code>main.py</code> without wanting <code>main()</code>'s input prompts to run.</p>
+<h3>Try it — same behavior, better shape</h3>
+<p>Run it exactly as before. Nothing about what the program DOES should have changed — that's the definition of a refactor: same behavior, better structure.</p>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Refactor into add_expense, print_expenses, and main"
+$ git push</code></pre>`)
         ]
       },
       {
-        n: "Collections: lists and dictionaries", weeks: "Weeks 7–8",
-        sum: "Model real data — a class roster, a shopping cart, a config file — with Python's two workhorse containers.",
+        n: "Dictionaries: Real Records", weeks: "Week 8",
+        sum: "Give each expense real structure with dictionaries, and add categories.",
         lessons: [
-          L("Lists and iteration patterns", "reading", 24, "Indexing, slicing, appending, and the map/filter/accumulate patterns done with plain loops.", ["Build and transform a list without index bugs"],
-            `<p class="lead">A list is an ordered, changeable sequence of values — the workhorse container you'll reach for constantly.</p>
-<h3>Indexing and slicing</h3>
-<pre><code>fruits = ["apple", "banana", "cherry", "date"]
-
-fruits[0]         # "apple"  — first item, index 0
-fruits[-1]         # "date"   — last item
-fruits[1:3]       # ["banana", "cherry"]  — a slice: from index 1, up to (not including) 3</code></pre>
-<p>Negative indices count from the end. Slices follow the same "stop before the end" rule as <code>range()</code> — <code>fruits[1:3]</code> gives 2 items, not 3.</p>
-<h3>Changing a list</h3>
-<pre><code>fruits.append("elderberry")      # add to the end
-fruits.insert(0, "apricot")      # insert at a specific position
-fruits.remove("banana")           # remove the first matching value
-fruits[0] = "avocado"                # replace by index</code></pre>
-<h3>Build-a-list-in-a-loop</h3>
-<p>The most common list pattern: start empty, <code>append</code> once per iteration.</p>
-<div class="trace" data-trace="cs110-list-build"></div>
-<h3>Membership and length</h3>
-<pre><code>"cherry" in fruits          # True — is this value present?
-len(fruits)                     # how many items</code></pre>
-<h3>A pattern to watch for</h3>
-<p>Modifying a list while looping over it is a classic source of bugs — items can get skipped because indices shift as you go. If you need a filtered list, build a <em>separate</em> list instead of removing from the one you're iterating:</p>
-<pre><code># risky: mutating while iterating
-for n in numbers:
-    if n &lt; 0:
-        numbers.remove(n)      # can silently skip items
-
-# safer: build a new list
-positives = []
-for n in numbers:
-    if n &gt;= 0:
-        positives.append(n)</code></pre>
-<h3>Try it</h3>
-<pre><code>words = ["a", "bb", "ccc", "dddd"]
-lengths = []
-for w in words:
-    lengths.append(len(w))
-
-assert lengths == [1, 2, 3, 4]
-print(lengths)</code></pre>`),
-          L("Dictionaries as records and lookups", "reading", 24, "Key–value pairs, when a dict beats a list, and counting things with a dict.", ["Choose the right container for a given shape of data"],
-            `<p class="lead">A dictionary maps keys to values — the tool for "look this up by name" instead of "look this up by position."</p>
+          L("Dictionaries as records and lookups", "reading", 24,
+            "Key–value pairs, when a dict beats a tuple, and totaling amounts per category.",
+            ["Choose the right container for a given shape of data", "Total values grouped by a key"],
+            `<p class="lead">A dictionary maps keys to values — the tool for "look this up by name," and the shape your expense records are about to take.</p>
 <h3>Building and reading a dict</h3>
-<pre><code>student = {
-    "name": "Ada",
-    "age": 22,
-    "enrolled": True,
-}
-
-student["name"]           # "Ada"
-student["gpa"]                # KeyError! "gpa" doesn't exist
-student.get("gpa")             # None — safe lookup, no crash
-student.get("gpa", 0.0)       # 0.0 — safe lookup with a fallback</code></pre>
-<p><code>[]</code> is strict and crashes on a missing key. <code>.get()</code> is forgiving — it returns <code>None</code>, or whatever default you supply, instead of crashing. Reach for <code>.get()</code> whenever a key might not be there.</p>
-<h3>Adding, updating, checking</h3>
-<pre><code>student["gpa"] = 3.8              # add a new key
-student["age"] = 23                 # update an existing key
-"name" in student                  # True — checks KEYS, not values
-del student["enrolled"]           # remove a key</code></pre>
+<pre><code>expense = {"description": "Coffee", "amount": 4.50, "category": "Food"}
+expense["description"]           # "Coffee"
+expense.get("notes")                # None — safe lookup, no crash
+expense.get("notes", "—")          # "—" — safe lookup with a fallback</code></pre>
+<p><code>[]</code> is strict and crashes on a missing key; <code>.get()</code> is forgiving. Reach for <code>.get()</code> whenever a key might not be there.</p>
 <h3>The counting pattern</h3>
-<p>This is the pattern behind the word-frequency lab coming up next, and it's one of the most useful things a dictionary does: count occurrences with <code>.get(key, 0) + 1</code>.</p>
+<p>Count occurrences with <code>.get(key, 0) + 1</code> — or, as your tracker needs, <em>sum</em> amounts per category the same way:</p>
 <div class="trace" data-trace="cs110-dict-count"></div>
 <h3>Looping over a dict</h3>
-<pre><code>prices = {"apple": 0.50, "bread": 2.75, "milk": 1.20}
-
-for key in prices:
-    print(key)                              # just the keys
-
-for key, value in prices.items():
-    print(key, "costs", value)          # keys AND values together</code></pre>
-<h3>List or dict — which one?</h3>
-<pre><code>Order matters, duplicates OK, no natural key       -&gt;  list
-Look things up by name/ID, no meaningful order     -&gt;  dict</code></pre>
-<h3>Try it</h3>
-<pre><code>inventory = {}
-items = ["pen", "pen", "notebook", "pen", "eraser"]
-for item in items:
-    inventory[item] = inventory.get(item, 0) + 1
-
-assert inventory == {"pen": 3, "notebook": 1, "eraser": 1}
-print(inventory)</code></pre>`),
-          L("Lab: word frequency", "lab", 55, "Read a text file and report its ten most common words. Auto-checked.", null,
-            `<p class="lead">Read text, count words, report the most common ones. This is the counting pattern from the last lesson, applied to something real.</p>
-<h3>The task</h3>
-<p>Write <code>word_frequency.py</code> with a function <code>top_words(text, n=10)</code> that returns the <code>n</code> most common words in <code>text</code> as a list of <code>(word, count)</code> tuples, most common first. Words should be lowercased, with surrounding punctuation stripped.</p>
-<h3>Why the function takes a string, not a file</h3>
-<p>Notice the signature takes <code>text</code>, a string — not a filename. That's deliberate: a function that reads a file directly is hard to test (every test would need a temp file on disk). Keep file-reading in <code>main()</code>, and pass plain data into the function you actually test:</p>
-<pre><code>def main():
-    with open("sample.txt", encoding="utf-8") as f:
-        text = f.read()
-    for word, count in top_words(text, 10):
-        print(f"{word}: {count}")
+<pre><code>totals = {"Food": 66.60, "Rent": 1200.00}
+for category, total in totals.items():
+    print(category, "costs", total)</code></pre>
+<h3>List of tuples vs. list of dicts</h3>
+<pre><code>("Coffee", 4.50)                                   # what: values, no labels
+{"description": "Coffee", "amount": 4.50}         # what AND which — self-documenting</code></pre>
+<p>A dict costs a little more to write than a tuple, but every value is labeled — <code>e["amount"]</code> reads clearly anywhere, while <code>e[1]</code> requires remembering what position 1 means. As a record grows past two or three fields (yours is about to), dicts win.</p>`),
+          L("Lab: categories and per-category totals", "lab", 45,
+            "Switch every expense from an unlabeled tuple to a self-documenting dict, and add a category.",
+            null,
+            `<p class="lead">Switch each expense from an unlabeled tuple to a self-documenting dict, and add a category to each one.</p>
+<h3>Update main.py</h3>
+<pre><code>def add_expense(expenses, description, amount, category):
+    expenses.append({
+        "description": description,
+        "amount": amount,
+        "category": category,
+    })
+    return expenses
 
 
-if __name__ == "__main__":
-    main()</code></pre>
-<h3>Stripping punctuation and ties</h3>
-<p>Python's standard library already has a ready-made string of every punctuation character: <code>string.punctuation</code>. <code>"hello,".strip(string.punctuation)</code> removes any of those characters from the start and end of a word, so "Hello," and "hello!" and "HELLO" can all be recognized as the same word once lowercased. For ties (two words with equal counts), Python's dict remembers insertion order, and <code>sorted()</code> is <strong>stable</strong> — it never reorders equal elements — so words keep first-seen order among ties for free.</p>
-<h3>The tests</h3>
-<div class="testfile">
-  <div class="tf-name">test_word_frequency.py</div>
-  <pre><code>from word_frequency import top_words
-
-def test_top_words_basic():
-    text = "the cat sat on the mat the cat ran"
-    result = top_words(text, 2)
-    assert result[0] == ("the", 3)
-    assert result[1] == ("cat", 2)
-
-def test_top_words_strips_punctuation():
-    text = "Hello, hello! HELLO world."
-    result = top_words(text, 1)
-    assert result[0] == ("hello", 3)
-
-def test_top_words_respects_n():
-    text = "a b c d e"
-    assert len(top_words(text, 3)) == 3
-
-def test_top_words_empty_string():
-    assert top_words("", 5) == []</code></pre>
-</div>
-<p>Start from the counting pattern in the previous lesson: split the text on whitespace, clean and lowercase each word, and build a dict of counts. The only new step is turning that dict into a sorted list of the top n.</p>
-<details class="reveal">
-  <summary>See one possible solution</summary>
-  <div class="reveal-body">
-    <pre><code>import string
+def total_by_category(expenses):
+    totals = {}
+    for expense in expenses:
+        cat = expense["category"]
+        totals[cat] = totals.get(cat, 0) + expense["amount"]
+    return totals
 
 
-def top_words(text, n=10):
-    """Return the n most common words in text as a list of (word, count)
-    tuples, most common first. Words are lowercased; punctuation is
-    stripped; ties keep first-seen order."""
-    counts = {}
-    for raw_word in text.split():
-        word = raw_word.strip(string.punctuation).lower()
-        if not word:
-            continue
-        counts[word] = counts.get(word, 0) + 1
+def print_expenses(expenses):
+    total = sum(e["amount"] for e in expenses)
+    print(f"\\nYou logged {len(expenses)} expense(s), totaling \${total:.2f}:")
+    for e in expenses:
+        print(f"  \${e['amount']:.2f} — {e['description']} ({e['category']})")
 
-    ordered = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
-    return ordered[:n]
+    print("\\nBy category:")
+    for cat, cat_total in total_by_category(expenses).items():
+        print(f"  {cat}: \${cat_total:.2f}")
 
 
 def main():
-    with open("sample.txt", encoding="utf-8") as f:
-        text = f.read()
-    for word, count in top_words(text, 10):
-        print(f"{word}: {count}")
+    print("=== Expense Tracker ===")
+    expenses = []
+    while True:
+        description = input("\\nExpense description (or 'done' to finish): ")
+        if description.lower() == "done":
+            break
+
+        amount_text = input("Amount: $")
+        try:
+            amount = float(amount_text)
+        except ValueError:
+            print("That doesn't look like a number — try again.")
+            continue
+        if amount &lt;= 0:
+            print("Amount must be positive — try again.")
+            continue
+
+        category = input("Category (e.g. Food, Rent, Fun): ")
+        add_expense(expenses, description, amount, category)
+
+    print_expenses(expenses)
 
 
 if __name__ == "__main__":
     main()</code></pre>
-  </div>
-</details>`)
+<p>Every place that used to unpack a tuple as <code>description, amount</code> now reads a dict by key instead. That's the whole migration.</p>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Switch expenses to dicts; add category and per-category totals"
+$ git push</code></pre>`)
         ]
       },
       {
-        n: "Testing and debugging", weeks: "Weeks 9–10",
-        sum: "Prove your code works with pytest, and find out why it doesn't with a debugger instead of guesswork.",
+        n: "Saving Your Data: Files and JSON", weeks: "Week 9",
+        sum: "Make your data survive after the program ends.",
         lessons: [
-          L("Writing tests with pytest", "reading", 26, "The arrange–act–assert shape, naming tests, and running one test vs. the whole file.", ["Write a focused test before fixing a bug", "Read pytest's failure output"],
-            `<p class="lead">You've been reading test files and running them since Unit 1. Now make it formal: why tests are structured the way they are, and how to write your own from scratch.</p>
+          L("Files, and Python data saved as JSON", "reading", 26,
+            "Reading and writing files, the json module, and handling the very first run when no data file exists yet.",
+            ["Read and write a file with open()", "Save and load Python data with json.dump / json.load", "Explain why the first run needs a special case"],
+            `<p class="lead">Run your tracker twice and the second run remembers nothing — everything lived only in a Python list that vanished when the program ended. This lesson fixes that permanently.</p>
+<h3>Reading and writing a plain file</h3>
+<pre><code>with open("notes.txt", "w", encoding="utf-8") as f:
+    f.write("Hello, file!")
+
+with open("notes.txt", encoding="utf-8") as f:
+    contents = f.read()
+    print(contents)          # Hello, file!</code></pre>
+<p><code>with open(...) as f:</code> opens the file and guarantees it's closed afterward, even if something goes wrong inside the block — always prefer this form over calling <code>open()</code> and <code>close()</code> by hand. <code>"w"</code> means write (overwriting anything already there); leaving the mode out defaults to read.</p>
+<h3>JSON: Python data, saved as text</h3>
+<p>Your expenses are a list of dicts — exactly the shape <strong>JSON</strong> (JavaScript Object Notation) was designed to store. Python's built-in <code>json</code> module converts between the two automatically:</p>
+<pre><code>import json
+
+expenses = [{"description": "Coffee", "amount": 4.5, "category": "Food"}]
+
+with open("expenses.json", "w", encoding="utf-8") as f:
+    json.dump(expenses, f, indent=2)          # Python -&gt; JSON text
+
+with open("expenses.json", encoding="utf-8") as f:
+    loaded = json.load(f)                       # JSON text -&gt; Python
+
+assert loaded == expenses</code></pre>
+<p><code>indent=2</code> just makes the saved file human-readable; it changes nothing about what comes back out of <code>json.load</code>.</p>
+<h3>The first-run problem</h3>
+<p>The very first time your tracker runs, <code>expenses.json</code> doesn't exist yet — trying to open it for reading would crash. Check first:</p>
+<pre><code>import os
+
+if os.path.exists("expenses.json"):
+    ...load it...
+else:
+    expenses = []</code></pre>
+<h3>One more Git idea: .gitignore</h3>
+<p><code>expenses.json</code> is about to fill up with data — first your test entries, later maybe real ones. Data files like this generally don't belong in a public GitHub repo alongside your source code. Create a file named <code>.gitignore</code> in your project with:</p>
+<pre><code>expenses.json
+__pycache__/</code></pre>
+<p>Any file or folder listed there, Git simply stops seeing — it won't show up in <code>git status</code>, and <code>git add -A</code> will skip it. Your code is tracked; your personal data isn't.</p>`),
+          L("Lab: persist expenses between runs", "lab", 45,
+            "Add save and load functions so your expenses survive after the program exits.",
+            null,
+            `<p class="lead">Make your expenses survive between runs.</p>
+<h3>Update main.py</h3>
+<pre><code>import json
+import os
+
+DATA_FILE = "expenses.json"
+
+
+def add_expense(expenses, description, amount, category):
+    expenses.append({
+        "description": description,
+        "amount": amount,
+        "category": category,
+    })
+    return expenses
+
+
+def total_by_category(expenses):
+    totals = {}
+    for expense in expenses:
+        cat = expense["category"]
+        totals[cat] = totals.get(cat, 0) + expense["amount"]
+    return totals
+
+
+def save_expenses(expenses, filename=DATA_FILE):
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(expenses, f, indent=2)
+
+
+def load_expenses(filename=DATA_FILE):
+    if not os.path.exists(filename):
+        return []
+    with open(filename, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def print_expenses(expenses):
+    total = sum(e["amount"] for e in expenses)
+    print(f"\\nYou logged {len(expenses)} expense(s), totaling \${total:.2f}:")
+    for e in expenses:
+        print(f"  \${e['amount']:.2f} — {e['description']} ({e['category']})")
+    print("\\nBy category:")
+    for cat, cat_total in total_by_category(expenses).items():
+        print(f"  {cat}: \${cat_total:.2f}")
+
+
+def main():
+    print("=== Expense Tracker ===")
+    expenses = load_expenses()
+    print(f"Loaded {len(expenses)} expense(s) from {DATA_FILE}.")
+
+    while True:
+        description = input("\\nExpense description (or 'done' to finish): ")
+        if description.lower() == "done":
+            break
+        amount_text = input("Amount: $")
+        try:
+            amount = float(amount_text)
+        except ValueError:
+            print("That doesn't look like a number — try again.")
+            continue
+        if amount &lt;= 0:
+            print("Amount must be positive — try again.")
+            continue
+        category = input("Category (e.g. Food, Rent, Fun): ")
+        add_expense(expenses, description, amount, category)
+
+    save_expenses(expenses)
+    print_expenses(expenses)
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+<h3>Try it twice</h3>
+<pre class="kbd-term"><code>$ python3 main.py
+=== Expense Tracker ===
+Loaded 0 expense(s) from expenses.json.
+...
+[enter one expense, then "done"]
+
+$ python3 main.py
+=== Expense Tracker ===
+Loaded 1 expense(s) from expenses.json.
+...</code></pre>
+<p>The second run remembers the first. Add <code>.gitignore</code> with <code>expenses.json</code> and <code>__pycache__/</code> if you haven't yet.</p>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Persist expenses to expenses.json between runs"
+$ git push</code></pre>`)
+        ]
+      },
+      {
+        n: "Proving It Works: Testing with pytest", weeks: "Week 10",
+        sum: "Prove your functions work with an automated pytest suite.",
+        lessons: [
+          L("Writing tests with pytest", "reading", 26,
+            "The arrange–act–assert shape, naming tests, and running one test vs. the whole file.",
+            ["Write a focused test before fixing a bug", "Read pytest's failure output"],
+            `<p class="lead">Every lab so far has used a bare <code>assert</code> to self-check a line or two. Now make it formal: a real, runnable test suite for the app you're building.</p>
 <h3>Arrange, act, assert</h3>
 <pre><code>def test_add_two_numbers():
     a, b = 2, 3               # ARRANGE — set up the inputs
@@ -1521,187 +1647,347 @@ if __name__ == "__main__":
     result = add(a, b)         # ACT — do the one thing being tested
 
     assert result == 5         # ASSERT — check the outcome</code></pre>
-<p>One test, one behavior. A test named <code>test_add_two_numbers</code> that also happens to check subtraction is confusing when it fails — you won't know which behavior broke. Prefer many small, obviously-named tests over a few large ones.</p>
+<p>One test, one behavior. A test named <code>test_add_two_numbers</code> that also happens to check subtraction is confusing when it fails — you won't know which behavior broke.</p>
 <h3>Naming rules pytest expects</h3>
 <pre><code>File names:     test_*.py  or  *_test.py
 Function names: test_*</code></pre>
-<p>pytest finds tests by these naming conventions alone — no registration, no special imports into your own code. That's why every test file in this course starts with <code>from your_module import the_function</code> and nothing else.</p>
+<p>pytest finds tests by these naming conventions alone — no registration, no special imports into your own code.</p>
 <h3>Running tests</h3>
-<pre class="kbd-term"><code>$ pytest                            # run every test file in the folder
-$ pytest test_fizzbuzz.py           # run just one file
-$ pytest test_fizzbuzz.py::test_fizzbuzz_basic   # run just one test
-$ pytest -v                          # verbose: list each test by name</code></pre>
+<pre class="kbd-term"><code>$ python3 -m pytest                 # run every test file in the folder
+$ python3 -m pytest test_main.py    # run just one file
+$ python3 -m pytest -v              # verbose: list each test by name</code></pre>
 <h3>Reading a failure</h3>
-<pre class="kbd-term"><code>$ pytest test_fizzbuzz.py -v
-test_fizzbuzz.py::test_fizzbuzz_basic FAILED
+<pre class="kbd-term"><code>$ python3 -m pytest -v
+test_main.py::test_total_by_category_multiple_same_category FAILED
 
 ===================== FAILURES =====================
-______________ test_fizzbuzz_basic __________________
+&gt;       assert totals == {"Food": 16.50}
+E       AssertionError: assert {'Food': 12.0} == {'Food': 16.5}
 
-    def test_fizzbuzz_basic():
-&gt;       assert fizzbuzz(15)[2] == "Fizz"
-E       AssertionError: assert '3' == 'Fizz'
-
-test_fizzbuzz.py:4: AssertionError
 1 failed in 0.02s</code></pre>
-<p>pytest shows the exact assertion and the <strong>actual</strong> value versus what you expected — here, index 2 held <code>'3'</code> when the test expected <code>'Fizz'</code>. Reading the actual-vs-expected line first, before your source code, is the fastest way to find the bug.</p>
-<h3>Write a failing test on purpose</h3>
-<p>Before you fix any bug, write a small test that reproduces it and watch it fail. Then fix the code and watch the same test pass. This proves the bug is actually fixed — not just "seemed fine when I tried it once" — and it stays in your test file forever, so that exact bug can never silently come back.</p>
-<pre><code>def test_fizzbuzz_multiple_of_fifteen():
-    result = fizzbuzz(15)
-    assert result[14] == "FizzBuzz"   # index 14 is the 15th item</code></pre>`),
-          L("Debugging methodically", "reading", 22, "Reproduce, isolate, hypothesize, check. Using breakpoints and stepping through code.", ["Use pdb / the editor debugger to inspect state mid-run"],
+<p>pytest shows the exact assertion and the <strong>actual</strong> value versus what you expected. Reading that line first, before your source code, is the fastest way to find the bug — you'll use exactly this in Module 11.</p>`),
+          L("Lab: a real test suite for your tracker", "lab", 50,
+            "Install pytest and write a genuine suite for add_expense, total_by_category, and save/load.",
+            null,
+            `<p class="lead">Install pytest and write a real suite for the functions you've built — the first time this course tests code that isn't a disposable example.</p>
+<h3>Install pytest</h3>
+<pre class="kbd-term"><code>$ python3 -m pip install pytest
+$ python3 -m pytest --version
+pytest 8.2.0</code></pre>
+<h3>Write the tests</h3>
+<div class="testfile">
+  <div class="tf-name">test_main.py</div>
+  <pre><code>from main import add_expense, total_by_category, save_expenses, load_expenses
+
+def test_add_expense_appends():
+    expenses = []
+    add_expense(expenses, "Coffee", 4.50, "Food")
+    assert len(expenses) == 1
+    assert expenses[0]["description"] == "Coffee"
+
+def test_total_by_category_single():
+    expenses = [{"description": "Coffee", "amount": 4.50, "category": "Food"}]
+    assert total_by_category(expenses) == {"Food": 4.50}
+
+def test_total_by_category_multiple_same_category():
+    expenses = [
+        {"description": "Coffee", "amount": 4.50, "category": "Food"},
+        {"description": "Lunch", "amount": 12.00, "category": "Food"},
+    ]
+    assert total_by_category(expenses) == {"Food": 16.50}
+
+def test_total_by_category_empty():
+    assert total_by_category([]) == {}
+
+def test_save_and_load_round_trip(tmp_path):
+    filename = tmp_path / "test_expenses.json"
+    expenses = [{"description": "Coffee", "amount": 4.50, "category": "Food"}]
+
+    save_expenses(expenses, filename=str(filename))
+    loaded = load_expenses(filename=str(filename))
+
+    assert loaded == expenses
+
+def test_load_missing_file_returns_empty_list(tmp_path):
+    filename = tmp_path / "does_not_exist.json"
+    assert load_expenses(filename=str(filename)) == []</code></pre>
+</div>
+<p><code>tmp_path</code> is a pytest built-in: a fresh, temporary folder pytest creates and deletes automatically for any test that asks for it as a parameter. It lets <code>test_save_and_load_round_trip</code> write a real file to disk without ever touching your actual <code>expenses.json</code> or leaving junk behind.</p>
+<h3>Run it</h3>
+<pre class="kbd-term"><code>$ python3 -m pytest -v
+test_main.py::test_add_expense_appends PASSED
+test_main.py::test_total_by_category_single PASSED
+test_main.py::test_total_by_category_multiple_same_category PASSED
+test_main.py::test_total_by_category_empty PASSED
+test_main.py::test_save_and_load_round_trip PASSED
+test_main.py::test_load_missing_file_returns_empty_list PASSED
+
+6 passed in 0.03s</code></pre>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Add pytest suite for add_expense, total_by_category, save/load"
+$ git push</code></pre>`)
+        ]
+      },
+      {
+        n: "Debugging Like a Professional", weeks: "Week 11",
+        sum: "Find and fix four real bugs the way a professional would — reproduce, isolate, hypothesize, check.",
+        lessons: [
+          L("Debugging methodically", "reading", 24,
+            "Reproduce, isolate, hypothesize, check. Print-tracing and breakpoint() for inspecting state mid-run.",
+            ["Use pdb / the editor debugger to inspect state mid-run"],
             `<p class="lead">Guessing wastes time. A short, repeatable procedure finds almost any bug faster than staring at the code hoping to spot it.</p>
 <h3>Reproduce, isolate, hypothesize, check</h3>
 <ol>
 <li><strong>Reproduce</strong> — get the failure to happen reliably, ideally in a one-line test, before touching anything.</li>
-<li><strong>Isolate</strong> — narrow down which function, which line, which value is responsible. Cut the problem in half repeatedly rather than reading every line.</li>
-<li><strong>Hypothesize</strong> — state, in one sentence, what you think is wrong. "I think total isn't being reset between calls."</li>
-<li><strong>Check</strong> — test that specific hypothesis. Right, fix it and confirm with the original failing test. Wrong, you've still eliminated one possibility — form a new hypothesis and repeat.</li>
+<li><strong>Isolate</strong> — narrow down which function, which line, which value is responsible.</li>
+<li><strong>Hypothesize</strong> — state, in one sentence, what you think is wrong.</li>
+<li><strong>Check</strong> — test that specific hypothesis. Right, fix it and confirm with the original failing test. Wrong, you've eliminated one possibility — repeat.</li>
 </ol>
 <h3>print-tracing</h3>
-<p>The simplest tool: print the values you're unsure about, right where you're unsure about them.</p>
-<pre><code>def total_cost(cart):
-    total = 0
-    for item in cart:
-        print("DEBUG:", item)          # what is item, really?
-        total = total + item["price"]
-    return total</code></pre>
-<p>This works, and everyone uses it. Its weakness: you have to guess in advance what to print, and remember to delete the print statements afterward.</p>
+<pre><code>def total_by_category(expenses):
+    totals = {}
+    for expense in expenses:
+        print("DEBUG:", expense)          # what is expense, really?
+        totals[expense["category"]] = expense["amount"]
+    return totals</code></pre>
+<p>Simple, and everyone uses it. Its weakness: you have to guess in advance what to print, and remember to delete it afterward.</p>
 <h3>breakpoint(): stepping through live</h3>
-<p>Drop <code>breakpoint()</code> into your code and running it drops you into an interactive debugger right at that line, with every variable inspectable:</p>
-<pre><code>def total_cost(cart):
-    total = 0
-    for item in cart:
+<pre><code>def total_by_category(expenses):
+    totals = {}
+    for expense in expenses:
         breakpoint()                     # execution pauses HERE
-        total = total + item["price"]
-    return total</code></pre>
-<pre class="kbd-term"><code>$ python cart.py
-&gt; cart.py(4)total_cost()
--&gt; total = total + item["price"]
-(Pdb) item
-{'name': 'Pencil', 'price': 0.5, 'quantity': 3}
-(Pdb) total
-0
+        totals[expense["category"]] = expense["amount"]
+    return totals</code></pre>
+<pre class="kbd-term"><code>$ python3 main.py
+&gt; main.py(4)total_by_category()
+-&gt; totals[expense["category"]] = expense["amount"]
+(Pdb) expense
+{'description': 'Coffee', 'amount': 4.5, 'category': 'Food'}
+(Pdb) totals
+{}
 (Pdb) c          # continue to the next breakpoint (or the end)</code></pre>
-<p>At the <code>(Pdb)</code> prompt, type any variable name to inspect it, or a short expression. <code>n</code> steps to the next line, <code>c</code> continues, <code>q</code> quits. This beats print-tracing once a bug is hard to reach — you inspect state live instead of guessing what to print ahead of time.</p>
-<h3>Read the traceback first</h3>
-<p>Before reaching for either tool: read the full traceback from the bottom up (see the previous unit's lesson on the call stack). It often tells you the exact line and the exact kind of mistake — you don't always need to add debugging code at all.</p>
+<p>At the <code>(Pdb)</code> prompt, type any variable name to inspect it. <code>n</code> steps to the next line, <code>c</code> continues, <code>q</code> quits. This beats print-tracing once a bug is hard to reach.</p>
 <h3>A worked hunt</h3>
-<p>A test says <code>format_price(3)</code> should be <code>"$3.00"</code> but gets <code>"$3"</code>.</p>
-<ol>
-<li><strong>Reproduce:</strong> the failing test already does this — no extra work.</li>
-<li><strong>Isolate:</strong> the bug is entirely inside <code>format_price</code>; nothing else is involved.</li>
-<li><strong>Hypothesize:</strong> "it's using str() instead of formatting to two decimal places."</li>
-<li><strong>Check:</strong> read the function — <code>return "$" + str(amount)</code> confirms it. Fix: <code>return "\${:.2f}".format(amount)</code>. Rerun the test — it passes.</li>
-</ol>`),
-          L("Lab: fix the failing suite", "lab", 60, "A small program ships with several failing tests across four real bugs. Fix each one without deleting any test.", null,
-            `<p class="lead">A small shopping-cart module ships with real bugs and a full test suite. Make every test pass, one at a time, without deleting any of them.</p>
-<h3>The code, as shipped</h3>
-<pre><code># cart.py
+<p>A test says entering two "Food" expenses should total \\$16.50, but gets \\$12.00 — the second one, alone. <strong>Reproduce:</strong> the failing test does this already. <strong>Isolate:</strong> only <code>total_by_category</code> is involved. <strong>Hypothesize:</strong> "it's overwriting the category total instead of adding to it." <strong>Check:</strong> read the function — <code>totals[cat] = expense["amount"]</code> confirms it; every expense in a category replaces the last instead of accumulating. Fix: <code>totals[cat] = totals.get(cat, 0) + expense["amount"]</code>. Rerun the test — it passes.</p>`),
+          L("Lab: fix four real bugs", "lab", 55,
+            "Your own tracker's core functions ship with four real bugs and a full test suite. Fix each one, one at a time.",
+            null,
+            `<p class="lead">A buggy version of your own tracker's core functions, four real bugs, a full test suite. Find and fix each one using the procedure from the last lesson.</p>
+<h3>The buggy code</h3>
+<pre><code># main.py (buggy version — helper functions only)
 
-def add_item(cart, name, price, quantity=1):
-    cart.append({"name": name, "price": price})
-    return cart
-
-
-def total_cost(cart):
-    total = 0
-    for item in cart:
-        total = total + item["price"]
-    return total
+def add_expense(expenses, description, amount, category):
+    expenses.append({
+        "description": description,
+        "amount": amount,
+        "category": category,
+    })
 
 
-def apply_discount(total, percent):
-    return total - (total * percent)
+def total_by_category(expenses):
+    totals = {}
+    for expense in expenses:
+        cat = expense["category"]
+        totals[cat] = expense["amount"]
+    return totals
 
 
-def format_price(amount):
-    return "$" + str(amount)</code></pre>
+def save_expenses(expenses, filename="expenses.json"):
+    with open(filename, encoding="utf-8") as f:
+        json.dump(expenses, f, indent=2)
+
+
+def load_expenses(filename="expenses.json"):
+    with open(filename, encoding="utf-8") as f:
+        return json.load(f)</code></pre>
 <h3>The tests</h3>
 <div class="testfile">
-  <div class="tf-name">test_cart.py</div>
-  <pre><code>from cart import add_item, total_cost, apply_discount, format_price
+  <div class="tf-name">test_main.py</div>
+  <pre><code>from main import add_expense, total_by_category, save_expenses, load_expenses
 
-def test_add_item_appends():
-    cart = []
-    add_item(cart, "Pencil", 0.50, 3)
-    assert len(cart) == 1
+def test_add_expense_appends():
+    expenses = []
+    add_expense(expenses, "Coffee", 4.50, "Food")
+    assert len(expenses) == 1
 
-def test_add_item_default_quantity():
-    cart = []
-    add_item(cart, "Notebook", 2.00)
-    assert cart[0]["quantity"] == 1
+def test_add_expense_returns_the_list():
+    expenses = []
+    result = add_expense(expenses, "Coffee", 4.50, "Food")
+    assert result is expenses
 
-def test_total_cost_single_item():
-    cart = [{"name": "Pencil", "price": 0.50, "quantity": 3}]
-    assert total_cost(cart) == 1.50
+def test_total_by_category_single():
+    expenses = [{"description": "Coffee", "amount": 4.50, "category": "Food"}]
+    assert total_by_category(expenses) == {"Food": 4.50}
 
-def test_total_cost_multiple_items():
-    cart = [
-        {"name": "Pencil", "price": 0.50, "quantity": 2},
-        {"name": "Notebook", "price": 2.00, "quantity": 1},
+def test_total_by_category_multiple_same_category():
+    expenses = [
+        {"description": "Coffee", "amount": 4.50, "category": "Food"},
+        {"description": "Lunch", "amount": 12.00, "category": "Food"},
     ]
-    assert total_cost(cart) == 3.00
+    assert total_by_category(expenses) == {"Food": 16.50}
 
-def test_total_cost_empty_cart():
-    assert total_cost([]) == 0
+def test_total_by_category_empty():
+    assert total_by_category([]) == {}
 
-def test_apply_discount_ten_percent():
-    assert apply_discount(100, 10) == 90
+def test_save_and_load_round_trip(tmp_path):
+    filename = tmp_path / "test_expenses.json"
+    expenses = [{"description": "Coffee", "amount": 4.50, "category": "Food"}]
+    save_expenses(expenses, filename=str(filename))
+    assert load_expenses(filename=str(filename)) == expenses
 
-def test_apply_discount_zero_percent():
-    assert apply_discount(50, 0) == 50
-
-def test_format_price_two_decimals():
-    assert format_price(3) == "$3.00"</code></pre>
+def test_load_missing_file_returns_empty_list(tmp_path):
+    filename = tmp_path / "does_not_exist.json"
+    assert load_expenses(filename=str(filename)) == []</code></pre>
 </div>
-<h3>Running the suite as shipped</h3>
-<pre class="kbd-term"><code>$ pytest test_cart.py -v
-test_cart.py::test_add_item_appends PASSED
-test_cart.py::test_add_item_default_quantity FAILED
-test_cart.py::test_total_cost_single_item FAILED
-test_cart.py::test_total_cost_multiple_items FAILED
-test_cart.py::test_total_cost_empty_cart PASSED
-test_cart.py::test_apply_discount_ten_percent FAILED
-test_cart.py::test_apply_discount_zero_percent PASSED
-test_cart.py::test_format_price_two_decimals FAILED
+<h3>Run it as shipped</h3>
+<pre class="kbd-term"><code>$ python3 -m pytest -v
+test_main.py::test_add_expense_appends PASSED
+test_main.py::test_add_expense_returns_the_list FAILED
+test_main.py::test_total_by_category_single PASSED
+test_main.py::test_total_by_category_multiple_same_category FAILED
+test_main.py::test_total_by_category_empty PASSED
+test_main.py::test_save_and_load_round_trip FAILED
+test_main.py::test_load_missing_file_returns_empty_list FAILED
 
-3 passed, 5 failed in 0.02s</code></pre>
-<p>Five failures, four real bugs — one bug causes two failures. Fix them one at a time, rerunning just the failing test each time, not the whole suite, so you're never staring at five red lines at once.</p>
-<h3>Hunting the first one</h3>
-<pre class="kbd-term"><code>$ pytest test_cart.py::test_add_item_default_quantity -v
-&gt;       assert cart[0]["quantity"] == 1
-E       KeyError: 'quantity'</code></pre>
-<p>Apply the procedure from the last lesson. Reproduce: already done, that's the test. Isolate: the error is in <code>add_item</code> — the dict it appends never mentions <code>"quantity"</code> at all. Hypothesize: "the function forgot to store the quantity it receives." Check: read <code>add_item</code> — confirmed, the parameter is accepted but never used. That single fix also clears <code>test_total_cost_single_item</code> and <code>test_total_cost_multiple_items</code>, which depend on quantity being stored and multiplied in.</p>
-<p>Do the same for <code>apply_discount</code> (compare the formula to what "10 percent off 100" should mean) and <code>format_price</code> (compare its output to what the test expects, character for character). Rerun the full suite only at the end, to confirm all eight pass together.</p>
+3 passed, 4 failed in 0.04s</code></pre>
+<p>Four bugs, four failures — but two of the seven tests on the <em>same</em> buggy function (<code>total_by_category</code>) still pass. A single-category test and an empty-list test can't see an overwrite bug that only shows up with two entries in the same category — passing tests prove what they check, and nothing more.</p>
+<h3>Hunt the first one</h3>
+<pre class="kbd-term"><code>$ python3 -m pytest test_main.py::test_add_expense_returns_the_list -v
+&gt;       assert result is expenses
+E       AssertionError: assert None is [...]</code></pre>
+<p><strong>Reproduce:</strong> already done. <strong>Isolate:</strong> only <code>add_expense</code> is involved. <strong>Hypothesize:</strong> "it never returns anything." <strong>Check:</strong> read the function — confirmed, no <code>return</code> statement at all. Add <code>return expenses</code> at the end.</p>
+<p>Repeat the same four-step procedure for the other three: compare <code>total_by_category</code>'s accumulation line to the working version from Module 8; compare <code>save_expenses</code>'s <code>open()</code> call to what writing actually requires; compare <code>load_expenses</code> to the version from Module 9 that checked whether the file exists first.</p>
 <details class="reveal">
-  <summary>See one possible solution</summary>
+  <summary>See the fixed functions</summary>
   <div class="reveal-body">
-    <pre><code># cart.py  (fixed)
-
-def add_item(cart, name, price, quantity=1):
-    cart.append({"name": name, "price": price, "quantity": quantity})
-    return cart
+    <pre><code>import os
 
 
-def total_cost(cart):
-    total = 0
-    for item in cart:
-        total = total + item["price"] * item["quantity"]
-    return total
+def add_expense(expenses, description, amount, category):
+    expenses.append({
+        "description": description,
+        "amount": amount,
+        "category": category,
+    })
+    return expenses
 
 
-def apply_discount(total, percent):
-    return total - (total * percent / 100)
+def total_by_category(expenses):
+    totals = {}
+    for expense in expenses:
+        cat = expense["category"]
+        totals[cat] = totals.get(cat, 0) + expense["amount"]
+    return totals
 
 
-def format_price(amount):
-    return "\${:.2f}".format(amount)</code></pre>
-    <pre class="kbd-term"><code>$ pytest test_cart.py -v
-8 passed in 0.02s</code></pre>
+def save_expenses(expenses, filename="expenses.json"):
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(expenses, f, indent=2)
+
+
+def load_expenses(filename="expenses.json"):
+    if not os.path.exists(filename):
+        return []
+    with open(filename, encoding="utf-8") as f:
+        return json.load(f)</code></pre>
+    <pre class="kbd-term"><code>$ python3 -m pytest -v
+7 passed in 0.03s</code></pre>
   </div>
-</details>`)
+</details>
+<h3>Checkpoint: commit and push</h3>
+<pre class="kbd-term"><code>$ git add -A
+$ git commit -m "Fix add_expense return value, category totals, and file modes"
+$ git push</code></pre>`)
+        ]
+      },
+      {
+        n: "Shipping It: Polish, README, and Your GitHub Portfolio", weeks: "Week 12",
+        sum: "Finish the feature set, write the README, and ship v1.0 to GitHub.",
+        lessons: [
+          L("Finishing the feature set and writing a real README", "reading", 24,
+            "total_by_month, top_expenses, what makes a README worth reading, and tagging a release.",
+            ["Sort a list of dicts by a field", "Write a README a stranger could actually use", "Tag and push a release"],
+            `<p class="lead">Two functions left to fulfill the project's original promise — summarize by category <em>and</em> month, and flag the three largest — plus the polish that makes a repo look like real, finished work.</p>
+<h3>Two more summary functions</h3>
+<pre><code>def total_by_month(expenses):
+    totals = {}
+    for expense in expenses:
+        m = expense["month"]
+        totals[m] = totals.get(m, 0) + expense["amount"]
+    return totals
+
+
+def top_expenses(expenses, n=3):
+    return sorted(expenses, key=lambda e: e["amount"], reverse=True)[:n]</code></pre>
+<p><code>total_by_month</code> is the exact same counting pattern as <code>total_by_category</code>, on a different field — proof that pattern was worth learning once, not twice. <code>sorted(..., key=..., reverse=True)</code> sorts by whatever the <code>key</code> function returns for each item — here, each expense's amount — largest first; <code>[:n]</code> slices off just the first three.</p>
+<h3>What makes a README worth reading</h3>
+<p>A repo with just code and no README asks a stranger to reverse-engineer what it does. A good README, in order: <strong>what it is</strong> (one or two sentences), <strong>how to run it</strong> (the exact, copy-pasteable commands), <strong>what it does</strong> (a short feature list), and <strong>how to run the tests</strong> — so a reviewer can verify your claims themselves.</p>
+<h3>Tagging a release</h3>
+<p>A <strong>tag</strong> marks one specific commit as a named milestone — "this is the version I'm calling finished":</p>
+<pre class="kbd-term"><code>$ git tag v1.0
+$ git push --tags</code></pre>
+<p>On GitHub, tags show up under the repo's "Releases" — a clean marker of "here's the state I'm pointing people to," separate from the ordinary flow of commits.</p>`),
+          L("Lab: finish, document, and ship v1.0", "lab", 55,
+            "Add month tracking and the final summary, write a real README, and push your v1.0 release.",
+            null,
+            `<p class="lead">Finish the project: add the month field and final summary, write the README, and ship v1.0.</p>
+<h3>Add month, and the final summary</h3>
+<pre><code>def add_expense(expenses, description, amount, category, month):
+    expenses.append({
+        "description": description,
+        "amount": amount,
+        "category": category,
+        "month": month,
+    })
+    return expenses
+
+
+def print_summary(expenses):
+    print("\\n--- By category ---")
+    for cat, total in total_by_category(expenses).items():
+        print(f"  {cat}: \${total:.2f}")
+
+    print("\\n--- By month ---")
+    for month, total in total_by_month(expenses).items():
+        print(f"  {month}: \${total:.2f}")
+
+    print("\\n--- Top 3 expenses ---")
+    for e in top_expenses(expenses, 3):
+        print(f"  \${e['amount']:.2f} — {e['description']} ({e['category']})")</code></pre>
+<p>Add a <code>month = input("Month (e.g. 2026-09): ")</code> prompt in <code>main()</code> alongside the category prompt, pass it into <code>add_expense</code>, and call <code>print_summary(expenses)</code> in place of the old category-only printing. Update <code>test_main.py</code>'s calls to <code>add_expense</code> to pass a month too, and add one test each for <code>total_by_month</code> and <code>top_expenses</code> — you know the pattern by now.</p>
+<h3>Write README.md</h3>
+<pre><code># Expense Tracker
+
+A command-line expense tracker. Log expenses as you go; it summarizes
+them by category and by month, and flags your three largest, every
+time you run it.
+
+## Run it
+
+    python3 main.py
+
+## What it does
+
+- Prompts for a description, amount, category, and month per expense
+- Validates that amount is a positive number
+- Saves everything to expenses.json, so it remembers between runs
+- Prints totals by category, totals by month, and the top 3 expenses
+
+## Run the tests
+
+    python3 -m pip install pytest
+    python3 -m pytest -v</code></pre>
+<h3>Ship it</h3>
+<pre class="kbd-term"><code>$ python3 -m pytest -v
+9 passed in 0.04s
+
+$ git add -A
+$ git commit -m "Add month tracking, final summary, and README"
+$ git push
+$ git tag v1.0
+$ git push --tags</code></pre>
+<div class="note">Visit your repo on GitHub. You should see a clean README on the front page, a full commit history — one readable step per module, back to "Add project README" — a passing test suite, and a v1.0 release. That's not a class exercise anymore. That's a real, working, tested, documented, version-controlled piece of software you built yourself, and it's the first thing worth linking from a resume.</div>`)
         ]
       }
     ]
